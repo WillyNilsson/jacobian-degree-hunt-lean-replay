@@ -8,4 +8,5 @@ require mathlib from git
   "4608056c77c52468b80773e8dcd585ef821c7c5e"
 
 @[default_target]
-lean_lib DegreeHuntReplay
+lean_lib DegreeHuntReplay where
+  roots := #[`DegreeHunt, `DegreeHuntMathlib, `DegreeHuntReplay]
