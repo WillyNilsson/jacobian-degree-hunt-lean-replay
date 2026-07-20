@@ -16,7 +16,7 @@ The workflow:
 
 1. rejects changed proof-file bytes;
 2. builds both files with the pinned dependency graph;
-3. enables `nanoda` as an independent checker and rejects `sorry`;
+3. enables `leanchecker` as a second environment checker and rejects `sorry`;
 4. reruns both files explicitly so their `#print axioms` output is retained;
 5. uploads the terminal logs as a GitHub Actions artifact.
 
