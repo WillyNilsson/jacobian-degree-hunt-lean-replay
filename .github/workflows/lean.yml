@@ -23,6 +23,19 @@ jobs:
           echo "4E0DD6F3E7C4AE7E723F6E2E771C70B2BF89D4CE27D5CB960B3922A175F24B91  DegreeHunt.lean" | sha256sum --check --strict
           echo "B29D8CB61C9CA0EE0D8C675656808A6551D2D1B6044F5B63AF1BDBE54A5F3DC4  DegreeHuntMathlib.lean" | sha256sum --check --strict
 
+      - name: Bootstrap pinned Lean toolchain
+        uses: leanprover/lean-action@v1
+        with:
+          build: false
+          test: false
+          lint: false
+          use-github-cache: false
+          use-mathlib-cache: false
+
+      - name: Resolve pinned dependency manifest
+        shell: bash
+        run: lake update
+
       - name: Build with pinned Lean and Mathlib
         uses: leanprover/lean-action@v1
         with:
