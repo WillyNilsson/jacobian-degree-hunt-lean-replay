@@ -1,0 +1,57 @@
+name: Exact Lean replay
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Confirm byte-identical proof inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "4E0DD6F3E7C4AE7E723F6E2E771C70B2BF89D4CE27D5CB960B3922A175F24B91  DegreeHunt.lean" | sha256sum --check --strict
+          echo "B29D8CB61C9CA0EE0D8C675656808A6551D2D1B6044F5B63AF1BDBE54A5F3DC4  DegreeHuntMathlib.lean" | sha256sum --check --strict
+
+      - name: Build with pinned Lean and Mathlib
+        uses: leanprover/lean-action@v1
+        with:
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: true
+          nanoda: true
+          nanoda-allow-sorry: false
+
+      - name: Preserve explicit kernel output
+        shell: bash
+        run: |
+          set -euo pipefail
+          lean --version | tee lean-version.log
+          lake env lean DegreeHunt.lean 2>&1 | tee DegreeHunt.log
+          lake env lean DegreeHuntMathlib.lean 2>&1 | tee DegreeHuntMathlib.log
+          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log; then
+            echo "Unexpected sorryAx dependency" >&2
+            exit 1
+          fi
+
+      - name: Upload replay logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-kernel-replay-logs
+          path: |
+            lean-version.log
+            DegreeHunt.log
+            DegreeHuntMathlib.log
+          if-no-files-found: warn
