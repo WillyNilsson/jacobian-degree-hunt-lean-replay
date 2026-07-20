@@ -1,7 +1,7 @@
 import Lake
 open Lake DSL
 
-package degree_hunt_replay
+package DegreeHuntReplay
 
 require mathlib from git
   "https://github.com/leanprover-community/mathlib4" @
