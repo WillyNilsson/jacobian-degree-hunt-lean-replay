@@ -24,13 +24,11 @@ jobs:
           echo "B29D8CB61C9CA0EE0D8C675656808A6551D2D1B6044F5B63AF1BDBE54A5F3DC4  DegreeHuntMathlib.lean" | sha256sum --check --strict
 
       - name: Bootstrap pinned Lean toolchain
-        uses: leanprover/lean-action@v1
-        with:
-          build: false
-          test: false
-          lint: false
-          use-github-cache: false
-          use-mathlib-cache: false
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
 
       - name: Resolve pinned dependency manifest
         shell: bash
