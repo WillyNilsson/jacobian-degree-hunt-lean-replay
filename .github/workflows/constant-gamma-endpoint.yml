@@ -1,0 +1,106 @@
+name: Constant-gamma fixed-collision certificate
+
+on:
+  push:
+    branches: ["agent/full-lean-formalization"]
+    paths:
+      - "constant_gamma_endpoint/**"
+      - "scripts/endpoint_fixed_collision.py"
+      - "scripts/verify_endpoint_witness.py"
+      - "mixed_gamma_certificates/requirements-hashed.txt"
+      - ".github/workflows/constant-gamma-endpoint.yml"
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "constant_gamma_endpoint/**"
+      - "scripts/endpoint_fixed_collision.py"
+      - "scripts/verify_endpoint_witness.py"
+      - "mixed_gamma_certificates/requirements-hashed.txt"
+      - ".github/workflows/constant-gamma-endpoint.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  certificate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - name: Check out the exact revision
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Gate inputs by SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          sha256sum --check --strict constant_gamma_endpoint/MANIFEST.sha256
+
+      - name: Select Python 3.12
+        uses: actions/setup-python@7f4fc3e22c37d6ff65e88745f38bd3157c663f7c # v4
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: mixed_gamma_certificates/requirements-hashed.txt
+
+      - name: Install hash-pinned regeneration dependency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --require-hashes -r mixed_gamma_certificates/requirements-hashed.txt
+
+      - name: Regenerate and replay the exact QQ unit ideal
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/endpoint_fixed_collision.py --emit-singular regenerated-constant-gamma-e2.sing | tee endpoint-generator.log
+          diff -u constant_gamma_endpoint/constant_gamma_e2.sing regenerated-constant-gamma-e2.sing
+
+      - name: Install pinned Singular package
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends --yes singular=1:4.3.2-p10+ds-1.1build1
+          Singular --version | tee singular-version.log
+          dpkg-query -W 'singular*' | sort | tee singular-packages.log
+
+      - name: Extract and internally verify the lift certificate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir certificate-constant-gamma-e2
+          cd certificate-constant-gamma-e2
+          Singular ../constant_gamma_endpoint/constant_gamma_e2.sing 2>&1 | tee ../constant_gamma_e2.log
+          cd ..
+          test "$(sed -n '/UNIT_BASIS_CHECK/{n;p;n;p;}' constant_gamma_e2.log | tr -d '\r')" = $'1\n1'
+          test "$(sed -n '/LIFT_IDENTITY_CHECK/{n;p;}' constant_gamma_e2.log | tr -d '\r')" = "1"
+
+      - name: Verify the witness with a second polynomial engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/verify_endpoint_witness.py constant_gamma_e2.log | tee constant_gamma_e2-independent-verifier.log
+
+      - name: Inventory preserved evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          find certificate-constant-gamma-e2 -type f -print0 2>/dev/null | sort -z | xargs -0 -r sha256sum > constant_gamma_e2-artifact-sha256.txt
+          sha256sum constant_gamma_e2.log constant_gamma_e2-independent-verifier.log endpoint-generator.log singular-version.log singular-packages.log >> constant_gamma_e2-artifact-sha256.txt 2>/dev/null || true
+
+      - name: Upload witness, session, and logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: constant-gamma-e2-certificate
+          path: |
+            certificate-constant-gamma-e2/
+            constant_gamma_e2.log
+            constant_gamma_e2-independent-verifier.log
+            constant_gamma_e2-artifact-sha256.txt
+            endpoint-generator.log
+            singular-version.log
+            singular-packages.log
+          if-no-files-found: warn

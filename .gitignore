@@ -1,0 +1,5 @@
+.lake/
+.generated/
+.verification/
+__pycache__/
+*.pyc

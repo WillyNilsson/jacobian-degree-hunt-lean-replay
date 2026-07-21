@@ -1,0 +1,4 @@
+case=CONSTANT_GAMMA_E2
+system_sha256=ec0c43f09dbedfa5d4734c9f96a12e1af946627843a39f6cd1b7b8062e81c935
+certificate_sha256=f9288a9e1c1e06f9ff775bece4b37fdfbd739218bcebe8c3ef04bf02756d8e12
+sum_h_i_e_i_eq_one=True

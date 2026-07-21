@@ -1,0 +1,47 @@
+                     SINGULAR                                 /  Development
+ A Computer Algebra System for Polynomial Computations       /   version 4.3.2
+                                                           0<
+ by: W. Decker, G.-M. Greuel, G. Pfister, H. Schoenemann     \   Feb 2023
+FB Mathematik der Universitaet, D-67653 Kaiserslautern        \  Debian 1:4.3.2-p10+ds-1.1build1
+CASE P
+SYSTEM_SHA256 d24e14c9d0db37e5013050ade166a9db44114d52670fdf00f2783c3095f994d1
+RAW_CONSTANT_BASIS
+G[1]=480
+UNIT_BASIS_CHECK
+1
+1
+LIFT_IDENTITY_CHECK
+1
+CERTIFICATE_MATRIX
+ROW 1
+-1/8*b21+1/2
+ROW 2
+0
+ROW 3
+0
+ROW 4
+0
+ROW 5
+0
+ROW 6
+0
+ROW 7
+0
+ROW 8
+0
+ROW 9
+0
+ROW 10
+0
+ROW 11
+0
+ROW 12
+1/12*b21-1/4
+ROW 13
+0
+ROW 14
+1/96*b30
+ROW 15
+-1/10*b21+7/24
+
+$Bye.

@@ -12,3 +12,19 @@ lean_lib DegreeHuntReplay where
   roots := #[`DegreeHunt, `DegreeHuntMathlib, `ParallelLinesNoGo,
     `DiagonalReduction, `WronskianDischarge, `RawDeltaBridge,
     `MixedGammaIdentities, `DegreeHuntReplay]
+
+/- The generated certificate replays and full-cubic bridge are intentionally
+kept in a separate, non-default target while the final case wiring remains WIP. -/
+lean_lib FullLeanFormalization where
+  roots := #[`LeanFormalization.Certificates.ConstantGammaE2,
+    `LeanFormalization.Certificates.Hyperbola0,
+    `LeanFormalization.Certificates.HyperbolaM,
+    `LeanFormalization.Certificates.HyperbolaV,
+    `LeanFormalization.Certificates.Line,
+    `LeanFormalization.Certificates.Parabola,
+    `LeanFormalization.Certificates.TAxisQuadratic,
+    `LeanFormalization.ConicSmoothness,
+    `LeanFormalization.ConstantGammaFixedCollision,
+    `LeanFormalization.GL2Covariance,
+    `LeanFormalization.AllCertificates,
+    `LeanFormalization.FullCubicScaffold]

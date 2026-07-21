@@ -1,0 +1,27 @@
+import LeanFormalization.FullCubicScaffold
+-- import completed ConicNormalForms and CanonicalCaseWiring modules here.
+
+/-!
+# Required final theorem for the nonconstant-gamma branch
+
+This theorem is the exact milestone after classification and case wiring.
+-/
+
+namespace MixedGammaFull
+
+open FullCubicScaffold
+
+variable {K : Type*} [Field K] [CharZero K] [IsAlgClosed K]
+
+/-- No full-cubic `(1,-1,-1)` scaffold solution has nonconstant gamma. -/
+theorem nonconstant_gamma_impossible
+    (x : Coefficients K)
+    (hDelta : delta x = 1)
+    (hnonconstant : x.c10 ≠ 0 ∨ x.c01 ≠ 0 ∨ x.c20 ≠ 0 ∨ x.c11 ≠ 0 ∨ x.c02 ≠ 0) :
+    False := by
+  -- obtain explicit canonical form from ConicNormalForms
+  -- transport Delta=1 using polynomial-level GL₂ covariance
+  -- dispatch to the six canonical no-solution theorems
+  sorry
+
+end MixedGammaFull

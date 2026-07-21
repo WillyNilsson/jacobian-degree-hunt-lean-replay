@@ -1,0 +1,39 @@
+import LeanFormalization.FullCubicScaffold
+import LeanFormalization.AllCertificates
+import MixedGammaIdentities
+
+/-!
+# Required: connect the literal determinant and curve restrictions to six ideals
+
+For each canonical gamma:
+1. specialize the 27 equations from `FullCubicScaffold.RawSystem`;
+2. derive the relevant restricted-curve Wronskian equations;
+3. show that the resulting equations are definitionally/equationally identical
+   to `MixedGammaCertificates.<Case>.e1 ... en`;
+4. invoke that case's generated `no_solution` theorem.
+
+Do not insert the certificate equations as new assumptions. Every equation must
+come from `rawSystem_iff_delta_eq_one`, coefficient specialization, or a proved
+Wronskian restriction identity.
+-/
+
+namespace MixedGammaFull.CanonicalCaseWiring
+
+open FullCubicScaffold
+
+variable {K : Type*} [Field K] [CharZero K] [IsAlgClosed K]
+
+-- Recommended theorem endpoints:
+-- theorem line_impossible (x) (hDelta : delta (setGammaLine x) = 1) : False
+-- theorem tAxisQuadratic_impossible ...
+-- theorem parabola_impossible ...
+-- theorem hyperbolaM_impossible ...
+-- theorem hyperbolaV_impossible ...
+-- theorem hyperbola0_impossible ...
+
+-- Parabola restriction: t = -(1+s^2); h=1 in the corrected W=-h*Delta identity.
+-- Hyperbola restrictions: clear cubic denominators and use
+-- MixedGammaIdentities.cleared_hyperbola_wronskian.
+-- Line/t-axis cases should reuse the style of WronskianDischarge.lean.
+
+end MixedGammaFull.CanonicalCaseWiring
