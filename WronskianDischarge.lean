@@ -76,8 +76,7 @@ lemma v_root_top_coefficients
   have e50 := h.e50
   have e51 := h.e51
   have e60 := h.e60
-  simp [pureV] at e01 e10 e02 e11 e20 e12 e21 e22 e30 e31 e32
-    e40 e41 e42 e50 e51 e60
+  simp [pureV] at e01 e10 e02 e11 e20 e12 e21 e22 e30 e31 e32 e40 e41 e42 e50 e51 e60
   let p0 := r + x.a20*r^2 + x.a30*r^3
   let p1 := x.a11*r + x.a21*r^2
   let p2 := x.a02 + x.a12*r
@@ -164,8 +163,7 @@ lemma t_root_top_coefficients
   have e40 := h.e40
   have e41 := h.e41
   have e42 := h.e42
-  simp [pureT] at e01 e02 e03 e04 e05 e10 e11 e12 e13 e14 e20 e21
-    e22 e23 e24 e30 e31 e32 e33 e40 e41 e42
+  simp [pureT] at e01 e02 e03 e04 e05 e10 e11 e12 e13 e14 e20 e21 e22 e23 e24 e30 e31 e32 e33 e40 e41 e42
   let p0 := x.a02*r^2
   let p1 := 1 + x.a11*r + x.a12*r^2
   let p2 := x.a20 + x.a21*r
