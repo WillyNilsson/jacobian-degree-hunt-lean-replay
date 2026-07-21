@@ -1,6 +1,6 @@
 # Exact GitHub CI replay for the Jacobian degree-hunt Lean bundle
 
-This repository replays the two byte-preserved Lean files on Ubuntu, avoiding
+This repository replays the complete Lean bundle on Ubuntu, avoiding
 the Windows Smart App Control failure encountered locally.
 
 Pinned inputs:
@@ -13,19 +13,29 @@ Pinned inputs:
   `B29D8CB61C9CA0EE0D8C675656808A6551D2D1B6044F5B63AF1BDBE54A5F3DC4`
 - `ParallelLinesNoGo.lean` SHA-256:
   `E3FADD5DDF2E87722C8B473FDBFBB9ABC5B59B4CC63B542A455A40B1E1129D33`
+- `DiagonalReduction.lean` SHA-256:
+  `9945CCA2BCF482DD07A98F49C7FB71F221AF9C77C493BEE0ED64BA6D525AA6B9`
 
 The workflow:
 
 1. rejects changed proof-file bytes;
-2. builds both files with the pinned dependency graph;
+2. builds all four proof modules with the pinned dependency graph;
 3. enables `leanchecker` as a second environment checker and rejects `sorry`;
-4. reruns both files explicitly so their `#print axioms` output is retained;
+4. reruns all four files explicitly so their `#print axioms` output is retained;
 5. uploads the terminal logs as a GitHub Actions artifact.
 
 `ParallelLinesNoGo.lean` additionally checks the structural Wronskian lemmas,
 the two-root vanishing argument, and exact integer-cleared Nullstellensatz
 certificates for both normalized coordinate-parallel line families in the
-degree-five `t²` branch.
+degree-five `t^2` branch.
+
+`DiagonalReduction.lean` encodes all 25 raw nonconstant coefficients of
+`Delta - 1` (the search's 20 equations plus the five triangular equations),
+proves covariance under the determinant-one diagonal change, derives both
+normalized certificate systems, and supplies end-to-end algebraically closed
+field theorems. GitHub Actions run #20 kernel-checked these theorems without
+`sorryAx`; the displayed axioms are `propext`, `Classical.choice`, and
+`Quot.sound`.
 
 To use it, create an empty GitHub repository, place these files at its root,
 commit, and push to `main`. The workflow also supports manual reruns through
