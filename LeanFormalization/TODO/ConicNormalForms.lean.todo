@@ -1,4 +1,6 @@
 import LeanFormalization.FullCubicScaffold
+import LeanFormalization.GL2Covariance
+import LeanFormalization.ConicSmoothness
 import MixedGammaIdentities
 
 /-!
@@ -50,15 +52,8 @@ structure NormalizationWitness (x : Coefficients K) where
   -- gamma_normalized : sourceSubstitute source (gamma x) = canonicalPolynomial canonical
   -- delta_preserved : ...
 
-/-- Singular conics are impossible because a point with gamma=gamma_v=gamma_t=0
-forces Delta=0. The pointwise algebraic lemma is already in MixedGammaIdentities. -/
-theorem singular_gamma_impossible
-    (x : Coefficients K) (hDelta : delta x = 1)
-    (hsingular : ∃ p : Fin 2 → K,
-      eval p (gamma x) = 0 ∧
-      eval p (pderiv 0 (gamma x)) = 0 ∧
-      eval p (pderiv 1 (gamma x)) = 0) : False := by
-  sorry
+/-- Singular conics are now excluded at polynomial level by the compiled
+`MixedGammaFull.ConicSmoothness.singular_gamma_impossible` theorem. -/
 
 /-- Main constructive normal-form theorem for every nonconstant smooth gamma. -/
 theorem classify_nonconstant_gamma

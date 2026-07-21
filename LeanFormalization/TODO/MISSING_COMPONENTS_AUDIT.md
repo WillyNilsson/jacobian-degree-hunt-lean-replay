@@ -22,8 +22,10 @@ but the evidence labels need three corrections.
    residual scaling, inverse, or case transition.  The replacement
    `scripts/verify_gl2_and_conic_witnesses.py` now checks covariance symbolically
    in all matrix entries and verifies explicit line, split-quadratic,
-   residual-scaling, and square-conic matrices.  Their Lean formalization still
-   remains.
+   residual-scaling, and square-conic matrices.  Whole-polynomial source/target
+   covariance, including the substitution chain rules, is now formalized in
+   `LeanFormalization/GL2Covariance.lean`; the constructive normal-form case
+   split and its explicit witnesses still remain.
 2. The bridge table records the intended consequence chains, not the promised
    term-by-term derivation of every generated certificate equation from the
    literal 27-equation system and the restriction identities.

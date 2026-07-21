@@ -1,6 +1,6 @@
 # Mixed-gamma full-formalization status
 
-The files compiled by the `FullLeanFormalization` Lake target establish three
+The files compiled by the `FullLeanFormalization` Lake target establish five
 kernel-checked layers:
 
 - exact Nullstellensatz identities for the six canonical nonconstant-gamma
@@ -9,13 +9,19 @@ kernel-checked layers:
   `RawSystem x ↔ delta x = 1` with all 27 nonconstant coefficients; and
 - a direct bridge from the constant-gamma specialization of that raw system
   and a collision at `e₂ = (0,1)` to all fourteen equations used by the
-  constant-gamma certificate, hence a kernel-checked contradiction.
+  constant-gamma certificate, hence a kernel-checked contradiction;
+- whole-polynomial GL₂ source/target covariance, including the two chain
+  rules for linear substitution and preservation of `Delta = 1` when the
+  determinant factors cancel; and
+- the polynomial-level exclusion of singular contracted conics under
+  `Delta = 1`.
 
 The files under `TODO/` are theorem maps supplied with the handoff. They are
 deliberately named `*.lean.todo`, are not compiled, and still contain explicit
 `sorry` placeholders. In particular, this branch does **not** yet kernel-check:
 
-1. the complete GL₂ normal-form classification;
+1. the complete GL₂ normal-form classification (the covariance and
+   singular-conic exclusion it uses are now checked);
 2. derivation of each certificate system from the literal determinant and the
    appropriate contracted-curve/Wronskian equations;
 3. the nonconstant-gamma case dispatch;
