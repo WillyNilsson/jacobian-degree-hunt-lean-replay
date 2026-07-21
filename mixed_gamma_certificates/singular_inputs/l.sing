@@ -1,0 +1,43 @@
+// Generated independently from coefficient-map arithmetic.
+// Case: L
+// Canonical-system SHA-256: 60b820f39e8701a4a057154058bec5eae9fc7f417ee63c6fe9112d13b9f5a7f2
+ring r=0,(a20,a11,a02,a30,a21,b20,b11,b02,b30,b21),dp;
+option(redSB);
+ideal I =
+  a11 + 2*b02,
+  -2*a02*b11 + 2*a11*b02,
+  2*a20 + b11 + 2,
+  -4*a02*b20 + a11 + 4*a20*b02 + 2*a21 + 6*b02,
+  -4*a02*b11 - 4*a02*b21 + 4*a11*b02 + 4*a21*b02,
+  -2*a11*b20 + 2*a20*b11 + 3*a20 + 3*a30 + 2*b11 + b21,
+  -10*a02*b20 - 6*a02*b30 - a11*b21 + 10*a20*b02 + a21*b11 + 2*a21 + 6*a30*b02 + 4*b02,
+  -2*a02*b11 - 8*a02*b21 + 2*a11*b02 + 8*a21*b02,
+  -3*a11*b20 - 3*a11*b30 + 3*a20*b11 + 2*a20*b21 - 2*a21*b20 + 3*a30*b11 + 4*a30 + 2*b21,
+  -6*a02*b20 - 14*a02*b30 - a11*b21 + 6*a20*b02 + a21*b11 + 14*a30*b02,
+  -4*a02*b21 + 4*a21*b02,
+  -4*a11*b30 + 3*a20*b21 - 3*a21*b20 - 3*a21*b30 + 4*a30*b11 + 3*a30*b21,
+  -8*a02*b30 + 8*a30*b02,
+  -4*a21*b30 + 4*a30*b21;
+matrix T;
+ideal G=liftstd(I,T);
+print("CASE L");
+print("SYSTEM_SHA256 60b820f39e8701a4a057154058bec5eae9fc7f417ee63c6fe9112d13b9f5a7f2");
+print("RAW_CONSTANT_BASIS");
+G;
+number unit_coefficient=leadcoef(G[1]);
+T=(1/unit_coefficient)*T;
+G=ideal(1);
+print("UNIT_BASIS_CHECK");
+size(G)==1;
+G[1]==1;
+print("LIFT_IDENTITY_CHECK");
+size(module(matrix(G)-matrix(I)*T))==0;
+print("CERTIFICATE_MATRIX");
+int certificate_row;
+for (certificate_row=1; certificate_row<=nrows(T); certificate_row++)
+{
+  print("ROW "+string(certificate_row));
+  T[certificate_row,1];
+}
+dump(":w l_certificate.dump");
+$

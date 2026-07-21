@@ -1,0 +1,40 @@
+// Generated independently from coefficient-map arithmetic.
+// Case: Q-t
+// Canonical-system SHA-256: f57c66d593d2eb089a5b75ab1517e41a442df1fdf3889cab91566bb56b5b1a12
+ring r=0,(a11,a02,a12,a03,b11,b02,b12,b03,c01),dp;
+option(redSB);
+ideal I =
+  a11 + 2*b02 + 2*c01,
+  -2*a02*b11 + 2*a11*b02 + 2*a11*c01 + a12 + 3*b02*c01 + 3*b03 + 3,
+  -3*a02*b11*c01 - 2*a02*b12 - 3*a03*b11 + 3*a11*b02*c01 + 3*a11*b03 + 3*a11 + 2*a12*b02 + 2*a12*c01 + 4*b02 + 4*b03*c01,
+  -4*a02*b11 - 3*a02*b12*c01 - 4*a03*b11*c01 - 3*a03*b12 + 4*a11*b02 + 4*a11*b03*c01 + 3*a12*b02*c01 + 3*a12*b03 + 3*a12 + 5*b03,
+  -4*a02*b12 - 5*a03*b11 - 4*a03*b12*c01 + 5*a11*b03 + 4*a12*b02 + 4*a12*b03*c01,
+  -5*a03*b12 + 5*a12*b03,
+  b11,
+  b11*c01 + 2*b12,
+  a11*b12 - a12*b11 + b11 + 2*b12*c01,
+  a11*b12*c01 - a12*b11*c01 + 2*b12,
+  a11*b12 - a12*b11;
+matrix T;
+ideal G=liftstd(I,T);
+print("CASE Q-t");
+print("SYSTEM_SHA256 f57c66d593d2eb089a5b75ab1517e41a442df1fdf3889cab91566bb56b5b1a12");
+print("RAW_CONSTANT_BASIS");
+G;
+number unit_coefficient=leadcoef(G[1]);
+T=(1/unit_coefficient)*T;
+G=ideal(1);
+print("UNIT_BASIS_CHECK");
+size(G)==1;
+G[1]==1;
+print("LIFT_IDENTITY_CHECK");
+size(module(matrix(G)-matrix(I)*T))==0;
+print("CERTIFICATE_MATRIX");
+int certificate_row;
+for (certificate_row=1; certificate_row<=nrows(T); certificate_row++)
+{
+  print("ROW "+string(certificate_row));
+  T[certificate_row,1];
+}
+dump(":w q_t_certificate.dump");
+$

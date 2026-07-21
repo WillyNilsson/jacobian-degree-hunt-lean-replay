@@ -1,0 +1,8 @@
+.github/workflows/mixed-gamma-certificates.yml text eol=lf
+.github/workflows/lean.yml text eol=lf
+mixed_gamma_certificates/** text eol=lf
+MixedGammaIdentities.lean text eol=lf
+AUDIT_MIXED_GAMMA.md text eol=lf
+lakefile.lean text eol=lf
+lake-manifest.json text eol=lf
+lean-toolchain text eol=lf
