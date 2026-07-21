@@ -25,6 +25,7 @@ jobs:
           echo "E3FADD5DDF2E87722C8B473FDBFBB9ABC5B59B4CC63B542A455A40B1E1129D33  ParallelLinesNoGo.lean" | sha256sum --check --strict
           echo "9945CCA2BCF482DD07A98F49C7FB71F221AF9C77C493BEE0ED64BA6D525AA6B9  DiagonalReduction.lean" | sha256sum --check --strict
           echo "3088126C691D0EB28F7F15F2AFCB1FF32BDD132E646A22EC56810F5862927B1D  WronskianDischarge.lean" | sha256sum --check --strict
+          echo "4E0FA3AE29B06B06D3DCB764F729C4C6C1C70EE5295E3F985B088198F6C131B6  RawDeltaBridge.lean" | sha256sum --check --strict
 
       - name: Bootstrap pinned Lean toolchain
         shell: bash
@@ -57,7 +58,8 @@ jobs:
           lake env lean ParallelLinesNoGo.lean 2>&1 | tee ParallelLinesNoGo.log
           lake env lean DiagonalReduction.lean 2>&1 | tee DiagonalReduction.log
           lake env lean WronskianDischarge.lean 2>&1 | tee WronskianDischarge.log
-          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log ParallelLinesNoGo.log DiagonalReduction.log WronskianDischarge.log; then
+          lake env lean RawDeltaBridge.lean 2>&1 | tee RawDeltaBridge.log
+          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log ParallelLinesNoGo.log DiagonalReduction.log WronskianDischarge.log RawDeltaBridge.log; then
             echo "Unexpected sorryAx dependency" >&2
             exit 1
           fi
@@ -74,4 +76,5 @@ jobs:
             ParallelLinesNoGo.log
             DiagonalReduction.log
             WronskianDischarge.log
+            RawDeltaBridge.log
           if-no-files-found: warn
