@@ -13,7 +13,7 @@ namespace ParallelLinesNoGo
 
 section Structural
 
-variable {K : Type*} [Field K] [CharZero K]
+variable {K : Type*} [Field K]
 
 /-- An affine polynomial vanishing at two distinct points is zero. -/
 lemma affine_eq_zero_of_two_roots
@@ -51,6 +51,7 @@ affine-linear.  The five hypotheses after `hdet` are the coefficients of
 degrees one through four in the Wronskian.
 -/
 lemma cubic_constant_wronskian
+    [CharZero K]
     (p0 p1 p2 p3 q0 q1 q2 q3 : K)
     (hdet : p0 * q1 - p1 * q0 ≠ 0)
     (h02 : p0 * q2 - p2 * q0 = 0)
