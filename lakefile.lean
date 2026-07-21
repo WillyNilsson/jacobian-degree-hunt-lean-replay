@@ -10,4 +10,5 @@ require mathlib from git
 @[default_target]
 lean_lib DegreeHuntReplay where
   roots := #[`DegreeHunt, `DegreeHuntMathlib, `ParallelLinesNoGo,
-    `DiagonalReduction, `WronskianDischarge, `DegreeHuntReplay]
+    `DiagonalReduction, `WronskianDischarge, `RawDeltaBridge,
+    `DegreeHuntReplay]
