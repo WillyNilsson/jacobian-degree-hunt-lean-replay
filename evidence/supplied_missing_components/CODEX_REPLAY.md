@@ -10,6 +10,18 @@ nondegenerate factorization witness (mod s^2 = disc): True
 degenerate square witness (uses c02 = c11^2/(4 c20)): True
 ```
 
+Because the originating script used only two rational matrix instances, Codex
+replaced that check with `scripts/verify_gl2_and_conic_witnesses.py`.  Its fully
+symbolic replay reports:
+
+```text
+fully_symbolic_GL2_covariance=True
+line_witnesses=True
+split_quadratic_witness=True
+nondegenerate_residual_normal_forms=True
+degenerate_parabola_witness=True
+```
+
 `endpoint_certificates_fable.py` was allowed to run for 120 seconds and
 reported:
 

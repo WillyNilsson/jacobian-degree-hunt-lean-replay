@@ -73,6 +73,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          python scripts/verify_gl2_and_conic_witnesses.py
           python scripts/extract_and_generate_lean.py evidence/public_ci_certificate_artifacts .generated
           diff -ru LeanFormalization/Certificates .generated/LeanFormalization/Certificates
           diff -u LeanFormalization/AllCertificates.lean .generated/LeanFormalization/AllCertificates.lean
