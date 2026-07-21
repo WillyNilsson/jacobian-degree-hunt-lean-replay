@@ -44,14 +44,22 @@ matrix T;
 ideal G=liftstd(I,T);
 print("CASE H-v");
 print("SYSTEM_SHA256 7d5058bbce36099a1cc87a7ca4d22262d68abaff63878326423ed8d7abab9d2f");
-print("BASIS");
+print("RAW_CONSTANT_BASIS");
 G;
+number unit_coefficient=leadcoef(G[1]);
+T=(1/unit_coefficient)*T;
+G=ideal(1);
 print("UNIT_BASIS_CHECK");
 size(G)==1;
 G[1]==1;
 print("LIFT_IDENTITY_CHECK");
 size(module(matrix(G)-matrix(I)*T))==0;
 print("CERTIFICATE_MATRIX");
-print(T);
+int certificate_row;
+for (certificate_row=1; certificate_row<=nrows(T); certificate_row++)
+{
+  print("ROW "+string(certificate_row));
+  T[certificate_row,1];
+}
 dump(":w h_v_certificate.dump");
 $

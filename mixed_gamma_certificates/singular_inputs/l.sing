@@ -22,14 +22,22 @@ matrix T;
 ideal G=liftstd(I,T);
 print("CASE L");
 print("SYSTEM_SHA256 60b820f39e8701a4a057154058bec5eae9fc7f417ee63c6fe9112d13b9f5a7f2");
-print("BASIS");
+print("RAW_CONSTANT_BASIS");
 G;
+number unit_coefficient=leadcoef(G[1]);
+T=(1/unit_coefficient)*T;
+G=ideal(1);
 print("UNIT_BASIS_CHECK");
 size(G)==1;
 G[1]==1;
 print("LIFT_IDENTITY_CHECK");
 size(module(matrix(G)-matrix(I)*T))==0;
 print("CERTIFICATE_MATRIX");
-print(T);
+int certificate_row;
+for (certificate_row=1; certificate_row<=nrows(T); certificate_row++)
+{
+  print("ROW "+string(certificate_row));
+  T[certificate_row,1];
+}
 dump(":w l_certificate.dump");
 $
