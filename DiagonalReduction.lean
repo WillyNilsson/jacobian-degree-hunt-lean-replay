@@ -15,9 +15,23 @@ namespace DiagonalReduction
 variable {K : Type*} [Field K] [CharZero K]
 
 structure Coefficients (K : Type*) where
-  a20 a11 a02 a30 a21 a12 : K
-  b20 b11 b02 b30 b21 b12 : K
-  c10 c01 c20 c11 c02 : K
+  a20 : K
+  a11 : K
+  a02 : K
+  a30 : K
+  a21 : K
+  a12 : K
+  b20 : K
+  b11 : K
+  b02 : K
+  b30 : K
+  b21 : K
+  b12 : K
+  c10 : K
+  c01 : K
+  c20 : K
+  c11 : K
+  c02 : K
 
 /-- The literal coefficient equations of `Delta = 1`. -/
 structure RawSystem (x : Coefficients K) : Prop where
@@ -82,31 +96,162 @@ theorem diagonal_preserves_raw_system
     e13 := ?_, e22 := ?_, e31 := ?_, e40 := ?_, e05 := ?_,
     e14 := ?_, e23 := ?_, e32 := ?_, e41 := ?_, e50 := ?_,
     e24 := ?_, e33 := ?_, e42 := ?_, e51 := ?_, e60 := ?_ }
-  case e01 => covariance (fun z : K => z/lambda) h.e01
-  case e10 => covariance (fun z : K => lambda*z) h.e10
-  case e02 => covariance (fun z : K => z/lambda^2) h.e02
-  case e11 => covariance (fun z : K => z) h.e11
-  case e20 => covariance (fun z : K => lambda^2*z) h.e20
-  case e03 => covariance (fun z : K => z/lambda^3) h.e03
-  case e12 => covariance (fun z : K => z/lambda) h.e12
-  case e21 => covariance (fun z : K => lambda*z) h.e21
-  case e30 => covariance (fun z : K => lambda^3*z) h.e30
-  case e04 => covariance (fun z : K => z/lambda^4) h.e04
-  case e13 => covariance (fun z : K => z/lambda^2) h.e13
-  case e22 => covariance (fun z : K => z) h.e22
-  case e31 => covariance (fun z : K => lambda^2*z) h.e31
-  case e40 => covariance (fun z : K => lambda^4*z) h.e40
-  case e05 => covariance (fun z : K => z/lambda^5) h.e05
-  case e14 => covariance (fun z : K => z/lambda^3) h.e14
-  case e23 => covariance (fun z : K => z/lambda) h.e23
-  case e32 => covariance (fun z : K => lambda*z) h.e32
-  case e41 => covariance (fun z : K => lambda^3*z) h.e41
-  case e50 => covariance (fun z : K => lambda^5*z) h.e50
-  case e24 => covariance (fun z : K => z/lambda^2) h.e24
-  case e33 => covariance (fun z : K => z) h.e33
-  case e42 => covariance (fun z : K => lambda^2*z) h.e42
-  case e51 => covariance (fun z : K => lambda^4*z) h.e51
-  case e60 => covariance (fun z : K => lambda^6*z) h.e60
+  next => covariance (fun z : K => z/lambda) h.e01
+  next => covariance (fun z : K => lambda*z) h.e10
+  next => covariance (fun z : K => z/lambda^2) h.e02
+  next => covariance (fun z : K => z) h.e11
+  next => covariance (fun z : K => lambda^2*z) h.e20
+  next => covariance (fun z : K => z/lambda^3) h.e03
+  next => covariance (fun z : K => z/lambda) h.e12
+  next => covariance (fun z : K => lambda*z) h.e21
+  next => covariance (fun z : K => lambda^3*z) h.e30
+  next => covariance (fun z : K => z/lambda^4) h.e04
+  next => covariance (fun z : K => z/lambda^2) h.e13
+  next => covariance (fun z : K => z) h.e22
+  next => covariance (fun z : K => lambda^2*z) h.e31
+  next => covariance (fun z : K => lambda^4*z) h.e40
+  next => covariance (fun z : K => z/lambda^5) h.e05
+  next => covariance (fun z : K => z/lambda^3) h.e14
+  next => covariance (fun z : K => z/lambda) h.e23
+  next => covariance (fun z : K => lambda*z) h.e32
+  next => covariance (fun z : K => lambda^3*z) h.e41
+  next => covariance (fun z : K => lambda^5*z) h.e50
+  next => covariance (fun z : K => z/lambda^2) h.e24
+  next => covariance (fun z : K => z) h.e33
+  next => covariance (fun z : K => lambda^2*z) h.e42
+  next => covariance (fun z : K => lambda^4*z) h.e51
+  next => covariance (fun z : K => lambda^6*z) h.e60
+
+/-- The four `v`-family certificate inputs are consequences of the literal
+coefficient system, including its five triangular equations. -/
+theorem normalized_parallel_v_from_raw
+    (x : Coefficients K) (h : RawSystem x)
+    (ha02 : x.a02 = 0) (ha12 : x.a12 = 0)
+    (hb02 : x.b02 = 0) (hb12 : x.b12 = 0)
+    (hc01 : x.c01 = 0) (hc20 : x.c20 = 1)
+    (hc11 : x.c11 = 0) (hc02 : x.c02 = 0) : False := by
+  have ha11 : x.a11 = 0 := by
+    linear_combination h.e01
+  have ha20 : x.a20 = -(x.b11 + 2*x.c10)/2 := by
+    linear_combination (1/2) * h.e10
+  have ha21 : x.a21 = 0 := by
+    have hx := h.e11
+    rw [ha02, ha11, ha20, hb02, hb12, hc01, hc11] at hx
+    linear_combination (1/2) * hx
+  have ha30 : x.a30 =
+      (2*x.b11^2 + 3*x.b11*x.c10 - 2*x.b21 +
+        6*x.c10^2 - 6)/6 := by
+    have hx := h.e20
+    rw [ha11, ha20, hc01, hc20] at hx
+    linear_combination (1/3) * hx
+  have e1 : 10*x.b11^2*x.b21 + 15*x.b11*x.b21*x.c10
+      - 10*x.b21^2 + 30*x.b21*x.c10^2 - 30*x.b21 = 0 := by
+    have hx := h.e60
+    rw [ha21, ha30, hc20] at hx
+    linear_combination 6 * hx
+  have e2 : 10*x.b11^3 + 8*x.b11^2*x.b21*x.c10
+      + 15*x.b11^2*x.c10 + 12*x.b11*x.b21*x.c10^2
+      - 22*x.b11*x.b21 + 30*x.b11*x.c10^2 - 30*x.b11
+      - 8*x.b21^2*x.c10 + 24*x.b21*x.c10^3
+      - 48*x.b21*x.c10 = 0 := by
+    have hx := h.e50
+    rw [ha11, ha20, ha21, ha30, hc01, hc20, hc11] at hx
+    linear_combination 6 * hx
+  have e3 : 8*x.b11^3*x.c10 + 6*x.b11^2*x.b21
+      + 12*x.b11^2*x.c10^2 - 2*x.b11^2
+      - 8*x.b11*x.b21*x.c10 + 24*x.b11*x.c10^3
+      - 33*x.b11*x.c10 - 6*x.b21^2 - 10*x.b21
+      + 30*x.c10^2 - 30 = 0 := by
+    have hx := h.e40
+    rw [ha11, ha20, ha21, ha30, hb12, hc01, hc20, hc11] at hx
+    linear_combination 6 * hx
+  have e4 : 6*x.b11^3 + 8*x.b11^2*x.c10 - 12*x.b11*x.b21
+      + 12*x.b11*x.c10^2 - 12*x.b11 - 8*x.b21*x.c10
+      + 24*x.c10^3 - 48*x.c10 = 0 := by
+    have hx := h.e30
+    rw [ha11, ha20, ha21, ha30, hc01, hc20, hc11] at hx
+    linear_combination 6 * hx
+  exact ParallelLinesNoGo.normalized_parallel_v_certificate
+    x.b11 x.b21 x.c10 e1 e2 e3 e4
+
+/-- The two triangular equations and three `t`-family certificate inputs are
+consequences of the literal coefficient system. -/
+theorem normalized_parallel_t_from_raw
+    (x : Coefficients K) (h : RawSystem x)
+    (ha20 : x.a20 = 0) (ha21 : x.a21 = 0) (ha30 : x.a30 = 0)
+    (hb20 : x.b20 = 0) (hb21 : x.b21 = 0) (hb30 : x.b30 = 0)
+    (hc10 : x.c10 = 0) (hc20 : x.c20 = 0)
+    (hc11 : x.c11 = 0) (hc02 : x.c02 = 1) : False := by
+  have hb11 : x.b11 = 0 := by
+    have hx := h.e10
+    rw [ha20, hc10] at hx
+    linear_combination hx
+  have hb12 : x.b12 = 0 := by
+    have hx := h.e11
+    rw [ha20, ha21, hb20, hb11, hc10, hc11] at hx
+    linear_combination (1/2) * hx
+  have ha11 : x.a11 = -2*(x.b02 + x.c01) := by
+    linear_combination h.e01
+  have ha12 : x.a12 =
+      4*x.b02^2 + 5*x.b02*x.c01 + 4*x.c01^2 - 3 := by
+    have hx := h.e02
+    rw [hb11, ha11, hc10, hc02] at hx
+    linear_combination hx
+  have e1 : 16*x.b02^3 + 20*x.b02^2*x.c01
+      + 16*x.b02*x.c01^2 - 12*x.b02 = 0 := by
+    have hx := h.e05
+    rw [hb12, ha12, hc02] at hx
+    linear_combination hx
+  have e2 : 12*x.b02^3*x.c01 + 15*x.b02^2*x.c01^2
+      + 4*x.b02^2 + 12*x.b02*x.c01^3 - 2*x.b02*x.c01
+      + 12*x.c01^2 - 9 = 0 := by
+    have hx := h.e04
+    rw [hb11, hb12, ha11, ha12, hc02] at hx
+    linear_combination hx
+  have e3 : 8*x.b02^3 + 12*x.b02^2*x.c01
+      + 12*x.b02*x.c01^2 - 8*x.b02
+      + 8*x.c01^3 - 12*x.c01 = 0 := by
+    have hx := h.e03
+    rw [hb11, hb12, ha11, ha12, hc10, hc11, hc02] at hx
+    linear_combination hx
+  exact ParallelLinesNoGo.normalized_parallel_t_certificate
+    x.b02 x.c01 e1 e2 e3
+
+/-- End-to-end `v`-family theorem from the literal system through the
+determinant-one diagonal normalization to the checked certificate. -/
+theorem parallel_v_from_raw_after_diagonal
+    (x : Coefficients K) (h : RawSystem x)
+    (lambda : K) (hLambda : Ne lambda 0)
+    (hScale : lambda^2*x.c20 = 1)
+    (ha02 : x.a02 = 0) (ha12 : x.a12 = 0)
+    (hb02 : x.b02 = 0) (hb12 : x.b12 = 0)
+    (hc01 : x.c01 = 0) (hc11 : x.c11 = 0) (hc02 : x.c02 = 0) : False := by
+  let y := diagonal lambda x
+  have hy : RawSystem y := diagonal_preserves_raw_system lambda hLambda x h
+  apply normalized_parallel_v_from_raw y hy
+  all_goals simp [y, diagonal, ha02, ha12, hb02, hb12,
+    hc01, hc11, hc02, hScale]
+
+/-- End-to-end `t`-family theorem from the literal system through the
+determinant-one diagonal normalization to the checked certificate. -/
+theorem parallel_t_from_raw_after_diagonal
+    (x : Coefficients K) (h : RawSystem x)
+    (lambda : K) (hLambda : Ne lambda 0)
+    (hScale : x.c02 = lambda^2)
+    (ha20 : x.a20 = 0) (ha21 : x.a21 = 0) (ha30 : x.a30 = 0)
+    (hb20 : x.b20 = 0) (hb21 : x.b21 = 0) (hb30 : x.b30 = 0)
+    (hc10 : x.c10 = 0) (hc20 : x.c20 = 0) (hc11 : x.c11 = 0) : False := by
+  let y := diagonal lambda x
+  have hy : RawSystem y := diagonal_preserves_raw_system lambda hLambda x h
+  apply normalized_parallel_t_from_raw y hy
+  all_goals simp [y, diagonal, ha20, ha21, ha30, hb20, hb21, hb30,
+    hc10, hc20, hc11, hScale, hLambda]
+
+#print axioms diagonal_preserves_raw_system
+#print axioms normalized_parallel_v_from_raw
+#print axioms normalized_parallel_t_from_raw
+#print axioms parallel_v_from_raw_after_diagonal
+#print axioms parallel_t_from_raw_after_diagonal
 
 end DiagonalReduction
 
