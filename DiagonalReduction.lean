@@ -83,7 +83,7 @@ def diagonal (lambda : K) (x : Coefficients K) : Coefficients K where
   c02 := x.c02/lambda^2
 
 local macro "covariance" f:term h:term : tactic =>
-  `(tactic| (convert congrArg $f $h using 1 <;>
+  `(tactic| (convert congrArg ($f) ($h) using 1 <;>
     simp [diagonal] <;> field_simp <;> ring))
 
 /-- Every literal coefficient equation transforms with weight `lambda^(i-j)`. -/
@@ -96,31 +96,31 @@ theorem diagonal_preserves_raw_system
     e13 := ?_, e22 := ?_, e31 := ?_, e40 := ?_, e05 := ?_,
     e14 := ?_, e23 := ?_, e32 := ?_, e41 := ?_, e50 := ?_,
     e24 := ?_, e33 := ?_, e42 := ?_, e51 := ?_, e60 := ?_ }
-  next => covariance (fun z : K => z/lambda) h.e01
-  next => covariance (fun z : K => lambda*z) h.e10
-  next => covariance (fun z : K => z/lambda^2) h.e02
-  next => covariance (fun z : K => z) h.e11
-  next => covariance (fun z : K => lambda^2*z) h.e20
-  next => covariance (fun z : K => z/lambda^3) h.e03
-  next => covariance (fun z : K => z/lambda) h.e12
-  next => covariance (fun z : K => lambda*z) h.e21
-  next => covariance (fun z : K => lambda^3*z) h.e30
-  next => covariance (fun z : K => z/lambda^4) h.e04
-  next => covariance (fun z : K => z/lambda^2) h.e13
-  next => covariance (fun z : K => z) h.e22
-  next => covariance (fun z : K => lambda^2*z) h.e31
-  next => covariance (fun z : K => lambda^4*z) h.e40
-  next => covariance (fun z : K => z/lambda^5) h.e05
-  next => covariance (fun z : K => z/lambda^3) h.e14
-  next => covariance (fun z : K => z/lambda) h.e23
-  next => covariance (fun z : K => lambda*z) h.e32
-  next => covariance (fun z : K => lambda^3*z) h.e41
-  next => covariance (fun z : K => lambda^5*z) h.e50
-  next => covariance (fun z : K => z/lambda^2) h.e24
-  next => covariance (fun z : K => z) h.e33
-  next => covariance (fun z : K => lambda^2*z) h.e42
-  next => covariance (fun z : K => lambda^4*z) h.e51
-  next => covariance (fun z : K => lambda^6*z) h.e60
+  case refine_1 => covariance (fun z : K => z/lambda) h.e01
+  case refine_2 => covariance (fun z : K => lambda*z) h.e10
+  case refine_3 => covariance (fun z : K => z/lambda^2) h.e02
+  case refine_4 => covariance (fun z : K => z) h.e11
+  case refine_5 => covariance (fun z : K => lambda^2*z) h.e20
+  case refine_6 => covariance (fun z : K => z/lambda^3) h.e03
+  case refine_7 => covariance (fun z : K => z/lambda) h.e12
+  case refine_8 => covariance (fun z : K => lambda*z) h.e21
+  case refine_9 => covariance (fun z : K => lambda^3*z) h.e30
+  case refine_10 => covariance (fun z : K => z/lambda^4) h.e04
+  case refine_11 => covariance (fun z : K => z/lambda^2) h.e13
+  case refine_12 => covariance (fun z : K => z) h.e22
+  case refine_13 => covariance (fun z : K => lambda^2*z) h.e31
+  case refine_14 => covariance (fun z : K => lambda^4*z) h.e40
+  case refine_15 => covariance (fun z : K => z/lambda^5) h.e05
+  case refine_16 => covariance (fun z : K => z/lambda^3) h.e14
+  case refine_17 => covariance (fun z : K => z/lambda) h.e23
+  case refine_18 => covariance (fun z : K => lambda*z) h.e32
+  case refine_19 => covariance (fun z : K => lambda^3*z) h.e41
+  case refine_20 => covariance (fun z : K => lambda^5*z) h.e50
+  case refine_21 => covariance (fun z : K => z/lambda^2) h.e24
+  case refine_22 => covariance (fun z : K => z) h.e33
+  case refine_23 => covariance (fun z : K => lambda^2*z) h.e42
+  case refine_24 => covariance (fun z : K => lambda^4*z) h.e51
+  case refine_25 => covariance (fun z : K => lambda^6*z) h.e60
 
 /-- The four `v`-family certificate inputs are consequences of the literal
 coefficient system, including its five triangular equations. -/
@@ -247,11 +247,56 @@ theorem parallel_t_from_raw_after_diagonal
   all_goals simp [y, diagonal, ha20, ha21, ha30, hb20, hb21, hb30,
     hc10, hc20, hc11, hScale, hLambda]
 
+section AlgebraicallyClosed
+
+variable [IsAlgClosed K]
+
+/-- Over an algebraically closed field the required `v`-normalizing scale
+exists whenever the pure quadratic coefficient is nonzero. -/
+theorem parallel_v_from_raw
+    (x : Coefficients K) (h : RawSystem x) (hc20ne : Ne x.c20 0)
+    (ha02 : x.a02 = 0) (ha12 : x.a12 = 0)
+    (hb02 : x.b02 = 0) (hb12 : x.b12 = 0)
+    (hc01 : x.c01 = 0) (hc11 : x.c11 = 0) (hc02 : x.c02 = 0) : False := by
+  obtain âŸ¨lambda, hPowâŸ© :=
+    IsAlgClosed.exists_pow_nat_eq (x.c20)â»Â¹ (by norm_num : 0 < 2)
+  have hLambda : Ne lambda 0 := by
+    intro hz
+    rw [hz] at hPow
+    norm_num at hPow
+    exact (inv_ne_zero hc20ne) hPow.symm
+  have hScale : lambda^2*x.c20 = 1 := by
+    rw [hPow]
+    exact inv_mul_cancelâ‚€ hc20ne
+  exact parallel_v_from_raw_after_diagonal x h lambda hLambda hScale
+    ha02 ha12 hb02 hb12 hc01 hc11 hc02
+
+/-- Over an algebraically closed field the required `t`-normalizing scale
+exists whenever the pure quadratic coefficient is nonzero. -/
+theorem parallel_t_from_raw
+    (x : Coefficients K) (h : RawSystem x) (hc02ne : Ne x.c02 0)
+    (ha20 : x.a20 = 0) (ha21 : x.a21 = 0) (ha30 : x.a30 = 0)
+    (hb20 : x.b20 = 0) (hb21 : x.b21 = 0) (hb30 : x.b30 = 0)
+    (hc10 : x.c10 = 0) (hc20 : x.c20 = 0) (hc11 : x.c11 = 0) : False := by
+  obtain âŸ¨lambda, hPowâŸ© :=
+    IsAlgClosed.exists_pow_nat_eq x.c02 (by norm_num : 0 < 2)
+  have hLambda : Ne lambda 0 := by
+    intro hz
+    rw [hz] at hPow
+    norm_num at hPow
+    exact hc02ne hPow.symm
+  exact parallel_t_from_raw_after_diagonal x h lambda hLambda hPow.symm
+    ha20 ha21 ha30 hb20 hb21 hb30 hc10 hc20 hc11
+
+end AlgebraicallyClosed
+
 #print axioms diagonal_preserves_raw_system
 #print axioms normalized_parallel_v_from_raw
 #print axioms normalized_parallel_t_from_raw
 #print axioms parallel_v_from_raw_after_diagonal
 #print axioms parallel_t_from_raw_after_diagonal
+#print axioms parallel_v_from_raw
+#print axioms parallel_t_from_raw
 
 end DiagonalReduction
 
