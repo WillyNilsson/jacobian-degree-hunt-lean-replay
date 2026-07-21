@@ -212,7 +212,7 @@ theorem normalized_parallel_t_from_raw
       + 12*x.b02*x.c01^2 - 8*x.b02
       + 8*x.c01^3 - 12*x.c01 = 0 := by
     have hx := h.e03
-    rw [hb11, hb12, ha11, ha12, hc10, hc11, hc02] at hx
+    rw [hb11, hb12, ha11, ha12, hc11, hc02] at hx
     linear_combination hx
   exact ParallelLinesNoGo.normalized_parallel_t_certificate
     x.b02 x.c01 e1 e2 e3
@@ -258,8 +258,8 @@ theorem parallel_v_from_raw
     (ha02 : x.a02 = 0) (ha12 : x.a12 = 0)
     (hb02 : x.b02 = 0) (hb12 : x.b12 = 0)
     (hc01 : x.c01 = 0) (hc11 : x.c11 = 0) (hc02 : x.c02 = 0) : False := by
-  obtain âŸ¨lambda, hPowâŸ© :=
-    IsAlgClosed.exists_pow_nat_eq (x.c20)â»Â¹ (by norm_num : 0 < 2)
+  choose lambda hPow using
+    IsAlgClosed.exists_pow_nat_eq (Inv.inv x.c20) (by norm_num : 0 < 2)
   have hLambda : Ne lambda 0 := by
     intro hz
     rw [hz] at hPow
@@ -267,7 +267,7 @@ theorem parallel_v_from_raw
     exact (inv_ne_zero hc20ne) hPow.symm
   have hScale : lambda^2*x.c20 = 1 := by
     rw [hPow]
-    exact inv_mul_cancelâ‚€ hc20ne
+    field_simp
   exact parallel_v_from_raw_after_diagonal x h lambda hLambda hScale
     ha02 ha12 hb02 hb12 hc01 hc11 hc02
 
@@ -278,7 +278,7 @@ theorem parallel_t_from_raw
     (ha20 : x.a20 = 0) (ha21 : x.a21 = 0) (ha30 : x.a30 = 0)
     (hb20 : x.b20 = 0) (hb21 : x.b21 = 0) (hb30 : x.b30 = 0)
     (hc10 : x.c10 = 0) (hc20 : x.c20 = 0) (hc11 : x.c11 = 0) : False := by
-  obtain âŸ¨lambda, hPowâŸ© :=
+  choose lambda hPow using
     IsAlgClosed.exists_pow_nat_eq x.c02 (by norm_num : 0 < 2)
   have hLambda : Ne lambda 0 := by
     intro hz
