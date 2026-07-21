@@ -11,6 +11,8 @@ Pinned inputs:
   `4E0DD6F3E7C4AE7E723F6E2E771C70B2BF89D4CE27D5CB960B3922A175F24B91`
 - `DegreeHuntMathlib.lean` SHA-256:
   `B29D8CB61C9CA0EE0D8C675656808A6551D2D1B6044F5B63AF1BDBE54A5F3DC4`
+- `ParallelLinesNoGo.lean` SHA-256:
+  `E3FADD5DDF2E87722C8B473FDBFBB9ABC5B59B4CC63B542A455A40B1E1129D33`
 
 The workflow:
 
@@ -20,8 +22,10 @@ The workflow:
 4. reruns both files explicitly so their `#print axioms` output is retained;
 5. uploads the terminal logs as a GitHub Actions artifact.
 
-This checks the older linear-in-`t` theorem. It does not formalize the newer
-parallel-line exclusions, which would require a new Lean source file.
+`ParallelLinesNoGo.lean` additionally checks the structural Wronskian lemmas,
+the two-root vanishing argument, and exact integer-cleared Nullstellensatz
+certificates for both normalized coordinate-parallel line families in the
+degree-five `t²` branch.
 
 To use it, create an empty GitHub repository, place these files at its root,
 commit, and push to `main`. The workflow also supports manual reruns through
