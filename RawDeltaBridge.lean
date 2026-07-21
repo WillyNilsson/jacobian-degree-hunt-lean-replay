@@ -17,6 +17,11 @@ open MvPolynomial
 
 variable {K : Type*} [Field K] [CharZero K]
 
+set_option maxHeartbeats 2000000
+set_option maxRecDepth 100000
+
+noncomputable section
+
 abbrev Bivar (K : Type*) [CommSemiring K] := MvPolynomial (Fin 2) K
 
 def v : Bivar K := X 0
@@ -211,24 +216,85 @@ lemma term_eq_monomial (i j : Nat) (a : K) :
   rw [term, v, t, C_mul_X_pow_eq_monomial, ← monomial_add_single]
   rfl
 
+private lemma pderiv_v_alpha (x : Coefficients K) :
+    pderiv 0 (alpha x) =
+      1 + C (2*x.a20)*v + C x.a11*t + C (3*x.a30)*v^2
+        + C (2*x.a21)*v*t + C x.a12*t^2 := by
+  simp [alpha, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
+  ring
+
+private lemma pderiv_t_alpha (x : Coefficients K) :
+    pderiv 1 (alpha x) =
+      C x.a11*v + C (2*x.a02)*t + C x.a21*v^2
+        + C (2*x.a12)*v*t := by
+  simp [alpha, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
+  ring
+
+private lemma pderiv_v_beta (x : Coefficients K) :
+    pderiv 0 (beta x) =
+      C (2*x.b20)*v + C x.b11*t + C (3*x.b30)*v^2
+        + C (2*x.b21)*v*t + C x.b12*t^2 := by
+  simp [beta, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
+  ring
+
+private lemma pderiv_t_beta (x : Coefficients K) :
+    pderiv 1 (beta x) =
+      1 + C x.b11*v + C (2*x.b02)*t + C x.b21*v^2
+        + C (2*x.b12)*v*t := by
+  simp [beta, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
+  ring
+
+private lemma pderiv_v_gamma (x : Coefficients K) :
+    pderiv 0 (gamma x) = C x.c10 + C (2*x.c20)*v + C x.c11*t := by
+  simp [gamma, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
+  ring
+
+private lemma pderiv_t_gamma (x : Coefficients K) :
+    pderiv 1 (gamma x) = C x.c01 + C x.c11*v + C (2*x.c02)*t := by
+  simp [gamma, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
+  ring
+
 /-- Direct symbolic expansion of the internally defined determinant. -/
 theorem delta_sub_one_expansion (x : Coefficients K) :
     delta x - 1 = rawPolynomial x := by
-  simp [delta, bracket, alpha, beta, gamma, rawPolynomial, term, v, t,
-    e01, e10, e02, e11, e20, e03, e12, e21, e30, e04, e13, e22,
-    e31, e40, e05, e14, e23, e32, e41, e50, e24, e33, e42, e51, e60,
-    MvPolynomial.pderiv_C, MvPolynomial.pderiv_mul,
-    MvPolynomial.pderiv_pow]
+  unfold delta bracket
+  rw [pderiv_v_alpha, pderiv_t_alpha, pderiv_v_beta, pderiv_t_beta,
+    pderiv_v_gamma, pderiv_t_gamma]
+  unfold alpha beta gamma rawPolynomial term v t
+  unfold e01 e10 e02 e11 e20 e03 e12 e21 e30 e04 e13 e22 e31 e40
+  unfold e05 e14 e23 e32 e41 e50 e24 e33 e42 e51 e60
   ring
 
 private lemma raw_eq_zero_of_system (x : Coefficients K) (h : RawSystem x) :
     rawPolynomial x = 0 := by
-  simp [rawPolynomial, e01, e10, e02, e11, e20, e03, e12, e21, e30,
-    e04, e13, e22, e31, e40, e05, e14, e23, e32, e41, e50, e24,
-    e33, e42, e51, e60, h.e01, h.e10, h.e02, h.e11, h.e20, h.e03,
-    h.e12, h.e21, h.e30, h.e04, h.e13, h.e22, h.e31, h.e40, h.e05,
-    h.e14, h.e23, h.e32, h.e41, h.e50, h.e24, h.e33, h.e42, h.e51,
-    h.e60, term]
+  have h01 : e01 x = 0 := by simpa [e01] using h.e01
+  have h10 : e10 x = 0 := by simpa [e10] using h.e10
+  have h02 : e02 x = 0 := by simpa [e02] using h.e02
+  have h11 : e11 x = 0 := by simpa [e11] using h.e11
+  have h20 : e20 x = 0 := by simpa [e20] using h.e20
+  have h03 : e03 x = 0 := by simpa [e03] using h.e03
+  have h12 : e12 x = 0 := by simpa [e12] using h.e12
+  have h21 : e21 x = 0 := by simpa [e21] using h.e21
+  have h30 : e30 x = 0 := by simpa [e30] using h.e30
+  have h04 : e04 x = 0 := by simpa [e04] using h.e04
+  have h13 : e13 x = 0 := by simpa [e13] using h.e13
+  have h22 : e22 x = 0 := by simpa [e22] using h.e22
+  have h31 : e31 x = 0 := by simpa [e31] using h.e31
+  have h40 : e40 x = 0 := by simpa [e40] using h.e40
+  have h05 : e05 x = 0 := by simpa [e05] using h.e05
+  have h14 : e14 x = 0 := by simpa [e14] using h.e14
+  have h23 : e23 x = 0 := by simpa [e23] using h.e23
+  have h32 : e32 x = 0 := by simpa [e32] using h.e32
+  have h41 : e41 x = 0 := by simpa [e41] using h.e41
+  have h50 : e50 x = 0 := by simpa [e50] using h.e50
+  have h24 : e24 x = 0 := by simpa [e24] using h.e24
+  have h33 : e33 x = 0 := by simpa [e33] using h.e33
+  have h42 : e42 x = 0 := by simpa [e42] using h.e42
+  have h51 : e51 x = 0 := by simpa [e51] using h.e51
+  have h60 : e60 x = 0 := by simpa [e60] using h.e60
+  simp [rawPolynomial, h01, h10, h02, h11, h20, h03, h12, h21, h30,
+    h04, h13, h22, h31, h40, h05, h14, h23, h32, h41, h50, h24,
+    h33, h42, h51, h60, term]
 
 private lemma raw_coefficient
     (x : Coefficients K) (i j : Nat) :
@@ -279,39 +345,45 @@ theorem rawSystem_iff_delta_eq_one (x : Coefficients K) :
     have hraw : rawPolynomial x = 0 := by
       rw [← delta_sub_one_expansion, hdelta]
       ring
-    refine {
-      e01 := ?_, e10 := ?_, e02 := ?_, e11 := ?_, e20 := ?_,
-      e03 := ?_, e12 := ?_, e21 := ?_, e30 := ?_, e04 := ?_,
-      e13 := ?_, e22 := ?_, e31 := ?_, e40 := ?_, e05 := ?_,
-      e14 := ?_, e23 := ?_, e32 := ?_, e41 := ?_, e50 := ?_,
-      e24 := ?_, e33 := ?_, e42 := ?_, e51 := ?_, e60 := ?_ }
-    all_goals
-      first
-      | simpa [raw_coefficient, e01] using equation_zero_of_raw_zero x hraw 0 1
-      | simpa [raw_coefficient, e10] using equation_zero_of_raw_zero x hraw 1 0
-      | simpa [raw_coefficient, e02] using equation_zero_of_raw_zero x hraw 0 2
-      | simpa [raw_coefficient, e11] using equation_zero_of_raw_zero x hraw 1 1
-      | simpa [raw_coefficient, e20] using equation_zero_of_raw_zero x hraw 2 0
-      | simpa [raw_coefficient, e03] using equation_zero_of_raw_zero x hraw 0 3
-      | simpa [raw_coefficient, e12] using equation_zero_of_raw_zero x hraw 1 2
-      | simpa [raw_coefficient, e21] using equation_zero_of_raw_zero x hraw 2 1
-      | simpa [raw_coefficient, e30] using equation_zero_of_raw_zero x hraw 3 0
-      | simpa [raw_coefficient, e04] using equation_zero_of_raw_zero x hraw 0 4
-      | simpa [raw_coefficient, e13] using equation_zero_of_raw_zero x hraw 1 3
-      | simpa [raw_coefficient, e22] using equation_zero_of_raw_zero x hraw 2 2
-      | simpa [raw_coefficient, e31] using equation_zero_of_raw_zero x hraw 3 1
-      | simpa [raw_coefficient, e40] using equation_zero_of_raw_zero x hraw 4 0
-      | simpa [raw_coefficient, e05] using equation_zero_of_raw_zero x hraw 0 5
-      | simpa [raw_coefficient, e14] using equation_zero_of_raw_zero x hraw 1 4
-      | simpa [raw_coefficient, e23] using equation_zero_of_raw_zero x hraw 2 3
-      | simpa [raw_coefficient, e32] using equation_zero_of_raw_zero x hraw 3 2
-      | simpa [raw_coefficient, e41] using equation_zero_of_raw_zero x hraw 4 1
-      | simpa [raw_coefficient, e50] using equation_zero_of_raw_zero x hraw 5 0
-      | simpa [raw_coefficient, e24] using equation_zero_of_raw_zero x hraw 2 4
-      | simpa [raw_coefficient, e33] using equation_zero_of_raw_zero x hraw 3 3
-      | simpa [raw_coefficient, e42] using equation_zero_of_raw_zero x hraw 4 2
-      | simpa [raw_coefficient, e51] using equation_zero_of_raw_zero x hraw 5 1
-      | simpa [raw_coefficient, e60] using equation_zero_of_raw_zero x hraw 6 0
+    have h01 : e01 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 0 1; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h10 : e10 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 1 0; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h02 : e02 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 0 2; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h11 : e11 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 1 1; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h20 : e20 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 2 0; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h03 : e03 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 0 3; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h12 : e12 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 1 2; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h21 : e21 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 2 1; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h30 : e30 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 3 0; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h04 : e04 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 0 4; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h13 : e13 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 1 3; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h22 : e22 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 2 2; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h31 : e31 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 3 1; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h40 : e40 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 4 0; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h05 : e05 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 0 5; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h14 : e14 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 1 4; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h23 : e23 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 2 3; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h32 : e32 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 3 2; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h41 : e41 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 4 1; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h50 : e50 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 5 0; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h24 : e24 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 2 4; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h33 : e33 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 3 3; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h42 : e42 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 4 2; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h51 : e51 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 5 1; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    have h60 : e60 x = 0 := by have hc := equation_zero_of_raw_zero x hraw 6 0; rw [raw_coefficient] at hc; norm_num at hc; exact hc
+    exact {
+      e01 := by simpa [e01] using h01, e10 := by simpa [e10] using h10,
+      e02 := by simpa [e02] using h02, e11 := by simpa [e11] using h11,
+      e20 := by simpa [e20] using h20, e03 := by simpa [e03] using h03,
+      e12 := by simpa [e12] using h12, e21 := by simpa [e21] using h21,
+      e30 := by simpa [e30] using h30, e04 := by simpa [e04] using h04,
+      e13 := by simpa [e13] using h13, e22 := by simpa [e22] using h22,
+      e31 := by simpa [e31] using h31, e40 := by simpa [e40] using h40,
+      e05 := by simpa [e05] using h05, e14 := by simpa [e14] using h14,
+      e23 := by simpa [e23] using h23, e32 := by simpa [e32] using h32,
+      e41 := by simpa [e41] using h41, e50 := by simpa [e50] using h50,
+      e24 := by simpa [e24] using h24, e33 := by simpa [e33] using h33,
+      e42 := by simpa [e42] using h42, e51 := by simpa [e51] using h51,
+      e60 := by simpa [e60] using h60 }
 
 section EndToEnd
 
@@ -345,5 +417,7 @@ end EndToEnd
 #print axioms rawSystem_iff_delta_eq_one
 #print axioms parallel_v_from_delta_distinct_roots
 #print axioms parallel_t_from_delta_distinct_roots
+
+end
 
 end RawDeltaBridge
