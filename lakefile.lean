@@ -9,4 +9,4 @@ require mathlib from git
 
 @[default_target]
 lean_lib DegreeHuntReplay where
-  roots := #[`DegreeHunt, `DegreeHuntMathlib, `DegreeHuntReplay]
+  roots := #[`DegreeHunt, `DegreeHuntMathlib, `ParallelLinesNoGo, `DegreeHuntReplay]
