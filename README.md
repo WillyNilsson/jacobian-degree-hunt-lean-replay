@@ -15,13 +15,15 @@ Pinned inputs:
   `E3FADD5DDF2E87722C8B473FDBFBB9ABC5B59B4CC63B542A455A40B1E1129D33`
 - `DiagonalReduction.lean` SHA-256:
   `9945CCA2BCF482DD07A98F49C7FB71F221AF9C77C493BEE0ED64BA6D525AA6B9`
+- `WronskianDischarge.lean` SHA-256:
+  `3088126C691D0EB28F7F15F2AFCB1FF32BDD132E646A22EC56810F5862927B1D`
 
 The workflow:
 
 1. rejects changed proof-file bytes;
-2. builds all four proof modules with the pinned dependency graph;
+2. builds all five proof modules with the pinned dependency graph;
 3. enables `leanchecker` as a second environment checker and rejects `sorry`;
-4. reruns all four files explicitly so their `#print axioms` output is retained;
+4. reruns all five files explicitly so their `#print axioms` output is retained;
 5. uploads the terminal logs as a GitHub Actions artifact.
 
 `ParallelLinesNoGo.lean` additionally checks the structural Wronskian lemmas,
@@ -36,6 +38,15 @@ normalized certificate systems, and supplies end-to-end algebraically closed
 field theorems. GitHub Actions run #20 kernel-checked these theorems without
 `sorryAx`; the displayed axioms are `propext`, `Classical.choice`, and
 `Quot.sound`.
+
+`WronskianDischarge.lean` removes the remaining assumed coefficient
+vanishings. From `RawSystem` plus each quadratic root equation it derives the
+contracted-line Wronskian identities by exact polynomial combinations, proves
+the derivative is nonzero at two distinct roots, invokes the quadratic/cubic
+Wronskian lemmas, and feeds the resulting vanishings into the diagonal
+normalization theorems. Its final theorems are
+`parallel_v_from_raw_distinct_roots` and
+`parallel_t_from_raw_distinct_roots`.
 
 To use it, create an empty GitHub repository, place these files at its root,
 commit, and push to `main`. The workflow also supports manual reruns through
