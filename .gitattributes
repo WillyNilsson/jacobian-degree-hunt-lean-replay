@@ -1,8 +1,14 @@
 .github/workflows/mixed-gamma-certificates.yml text eol=lf
 .github/workflows/lean.yml text eol=lf
+.github/workflows/full-formalization-wip.yml text eol=lf
 mixed_gamma_certificates/** text eol=lf
+LeanFormalization/** text eol=lf
+certificate_data/** text eol=lf
+scripts/** text eol=lf
+evidence/public_ci_certificate_artifacts/** -text
 MixedGammaIdentities.lean text eol=lf
 AUDIT_MIXED_GAMMA.md text eol=lf
 lakefile.lean text eol=lf
 lake-manifest.json text eol=lf
 lean-toolchain text eol=lf
+.gitignore text eol=lf

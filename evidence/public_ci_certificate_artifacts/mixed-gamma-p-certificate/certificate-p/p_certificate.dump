@@ -1,0 +1,9 @@
+ring r = (QQ),(a21,a30,b21,b30),(dp(4),C);
+ideal I = ideal(a30+2*b21+2,2*a30*b21-2*a21*b30+2*a30+3*b21,3*a30*b21-3*a21*b30,-2*a21+b30,-6*a21+b30,-4*a21,2*a30*b21-2*a21*b30+a30+2*b21+2,8*a30*b21-8*a21*b30+4*a30+6*b21,11*a30*b21-11*a21*b30,-6*a21+b30,-8*a21,6*a30*b21-6*a21*b30+2*a30+3*b21,13*a30*b21-13*a21*b30,-4*a21,5*a30*b21-5*a21*b30);
+matrix T[15][1] = -1/8*b21+1/2,0,0,0,0,0,0,0,0,0,0,1/12*b21-1/4,0,1/96*b30,-1/10*b21+7/24;
+ideal G = ideal(1);
+number unit_coefficient = 480;
+int certificate_row = 16;
+option(set, intvec(100663426, 10321));
+load("standard.lib","try");
+RETURN();

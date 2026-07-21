@@ -1,0 +1,29 @@
+import LeanFormalization.FullCubicScaffold
+
+/-!
+# Required: constant-gamma endpoint
+
+When all five c-coefficients vanish, gamma=1 and Delta is the ordinary plane
+Jacobian bracket of alpha and beta. The current conventional proof cites the
+classical degree-at-most-three plane Keller result (Magnus-type low-degree
+case). Mathlib does not appear to expose a ready theorem with exactly this API.
+
+Preferred implementation options, in order:
+1. a direct normalized degree-≤3 coefficient proof tailored to this ansatz;
+2. a reusable formalization of the applicable low-degree plane theorem;
+3. temporarily isolate a clearly named axiom only on a non-public experimental
+   branch--never in the claimed full formalization.
+
+Final required endpoint should construct/establish the relevant invertibility,
+not merely assert that a literature citation exists.
+-/
+
+namespace MixedGammaFull.ConstantGamma
+
+open FullCubicScaffold
+
+variable {K : Type*} [Field K] [CharZero K] [IsAlgClosed K]
+
+-- theorem constant_gamma_endpoint ... := by sorry
+
+end MixedGammaFull.ConstantGamma

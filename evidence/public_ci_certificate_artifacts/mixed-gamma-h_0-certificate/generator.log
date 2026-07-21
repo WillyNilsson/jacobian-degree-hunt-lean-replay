@@ -1,0 +1,7 @@
+L: equations=14 variables=10 digest=60b820f39e8701a4a057154058bec5eae9fc7f417ee63c6fe9112d13b9f5a7f2 unit=True
+Q-t: equations=11 variables=9 digest=f57c66d593d2eb089a5b75ab1517e41a442df1fdf3889cab91566bb56b5b1a12 unit=True
+P: equations=15 variables=4 digest=d24e14c9d0db37e5013050ade166a9db44114d52670fdf00f2783c3095f994d1 unit=True
+H-m: equations=36 variables=15 digest=a266649de502a2116815fa29d80ed8997f16f0027c70dc9ab1264548c9b2b66c unit=True
+H-v: equations=36 variables=14 digest=7d5058bbce36099a1cc87a7ca4d22262d68abaff63878326423ed8d7abab9d2f unit=True
+H-0: equations=36 variables=14 digest=d6da3bbd8a47232b077cf7e5297d5d3489aa5751da174f7e1974ad8de227507e unit=True
+independent coefficient-map regeneration complete

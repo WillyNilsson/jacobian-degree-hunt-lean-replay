@@ -1,0 +1,70 @@
+import LeanFormalization.FullCubicScaffold
+import MixedGammaIdentities
+
+/-!
+# Required: GL₂ classification of nonconstant quadratic gamma
+
+This is a deliberately non-compiling theorem map, not a fake proof. Replace each
+`by
+  sorry` only after the definitions and normal-form witnesses are settled.
+
+Target field assumptions for the current theorem:
+  [Field K] [CharZero K] [IsAlgClosed K]
+
+Represent gamma = 1 + ell + q by the five coefficients already stored in
+FullCubicScaffold.Coefficients. The classification must return an explicit
+invertible source transformation, plus the paired target transformation needed
+to restore the normalized alpha/beta linear jets and preserve Delta = 1.
+-/
+
+namespace MixedGammaFull.ConicNormalForms
+
+open FullCubicScaffold
+
+variable {K : Type*} [Field K] [CharZero K] [IsAlgClosed K]
+
+inductive CanonicalGamma (K : Type*) where
+  | line
+  | tAxisQuadratic (c01 : K)
+  | parabola
+  | hyperbolaM (m : K)
+  | hyperbolaV
+  | hyperbola0
+
+/-- Exact polynomial represented by each canonical case. -/
+def canonicalPolynomial : CanonicalGamma K → Bivar K
+  | .line => 1 + v
+  | .tAxisQuadratic c01 => 1 + C c01*t + t^2
+  | .parabola => 1 + t + v^2
+  | .hyperbolaM m => 1 + C m*v + t + v*t
+  | .hyperbolaV => 1 + v + v*t
+  | .hyperbola0 => 1 + v*t
+
+/-- Package the explicit GL₂ source change and the determinant-compensating
+change in the `(alpha,beta)` target slots. Codex should choose the least painful
+Mathlib matrix/linear-equivalence representation and keep the matrices explicit. -/
+structure NormalizationWitness (x : Coefficients K) where
+  canonical : CanonicalGamma K
+  -- source : GL (Fin 2) K
+  -- target : GL (Fin 2) K
+  -- gamma_normalized : sourceSubstitute source (gamma x) = canonicalPolynomial canonical
+  -- delta_preserved : ...
+
+/-- Singular conics are impossible because a point with gamma=gamma_v=gamma_t=0
+forces Delta=0. The pointwise algebraic lemma is already in MixedGammaIdentities. -/
+theorem singular_gamma_impossible
+    (x : Coefficients K) (hDelta : delta x = 1)
+    (hsingular : ∃ p : Fin 2 → K,
+      eval p (gamma x) = 0 ∧
+      eval p (pderiv 0 (gamma x)) = 0 ∧
+      eval p (pderiv 1 (gamma x)) = 0) : False := by
+  sorry
+
+/-- Main constructive normal-form theorem for every nonconstant smooth gamma. -/
+theorem classify_nonconstant_gamma
+    (x : Coefficients K)
+    (hnonconstant : x.c10 ≠ 0 ∨ x.c01 ≠ 0 ∨ x.c20 ≠ 0 ∨ x.c11 ≠ 0 ∨ x.c02 ≠ 0)
+    (hDelta : delta x = 1) : NormalizationWitness x := by
+  sorry
+
+end MixedGammaFull.ConicNormalForms

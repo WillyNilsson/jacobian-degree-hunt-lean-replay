@@ -1,0 +1,10 @@
+/-!
+# Final assembly target
+
+After completing the nonconstant and constant gamma modules, expose one theorem
+whose assumptions mention only the original normalized full-cubic scaffold and
+its literal determinant equation. It must not assume any CAS-generated case
+system, classification result, or certificate identity as a hypothesis.
+
+Run `#print axioms` and reject `sorryAx` or any project-specific axiom.
+-/
