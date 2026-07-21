@@ -82,7 +82,7 @@ def diagonal (lambda : K) (x : Coefficients K) : Coefficients K where
   c11 := x.c11
   c02 := x.c02/lambda^2
 
-local macro "covariance" f:term h:term : tactic =>
+local macro "covariance" f:term "," h:term : tactic =>
   `(tactic| (convert congrArg ($f) ($h) using 1 <;>
     simp [diagonal] <;> field_simp <;> ring))
 
@@ -96,31 +96,31 @@ theorem diagonal_preserves_raw_system
     e13 := ?_, e22 := ?_, e31 := ?_, e40 := ?_, e05 := ?_,
     e14 := ?_, e23 := ?_, e32 := ?_, e41 := ?_, e50 := ?_,
     e24 := ?_, e33 := ?_, e42 := ?_, e51 := ?_, e60 := ?_ }
-  case refine_1 => covariance (fun z : K => z/lambda) h.e01
-  case refine_2 => covariance (fun z : K => lambda*z) h.e10
-  case refine_3 => covariance (fun z : K => z/lambda^2) h.e02
-  case refine_4 => covariance (fun z : K => z) h.e11
-  case refine_5 => covariance (fun z : K => lambda^2*z) h.e20
-  case refine_6 => covariance (fun z : K => z/lambda^3) h.e03
-  case refine_7 => covariance (fun z : K => z/lambda) h.e12
-  case refine_8 => covariance (fun z : K => lambda*z) h.e21
-  case refine_9 => covariance (fun z : K => lambda^3*z) h.e30
-  case refine_10 => covariance (fun z : K => z/lambda^4) h.e04
-  case refine_11 => covariance (fun z : K => z/lambda^2) h.e13
-  case refine_12 => covariance (fun z : K => z) h.e22
-  case refine_13 => covariance (fun z : K => lambda^2*z) h.e31
-  case refine_14 => covariance (fun z : K => lambda^4*z) h.e40
-  case refine_15 => covariance (fun z : K => z/lambda^5) h.e05
-  case refine_16 => covariance (fun z : K => z/lambda^3) h.e14
-  case refine_17 => covariance (fun z : K => z/lambda) h.e23
-  case refine_18 => covariance (fun z : K => lambda*z) h.e32
-  case refine_19 => covariance (fun z : K => lambda^3*z) h.e41
-  case refine_20 => covariance (fun z : K => lambda^5*z) h.e50
-  case refine_21 => covariance (fun z : K => z/lambda^2) h.e24
-  case refine_22 => covariance (fun z : K => z) h.e33
-  case refine_23 => covariance (fun z : K => lambda^2*z) h.e42
-  case refine_24 => covariance (fun z : K => lambda^4*z) h.e51
-  case refine_25 => covariance (fun z : K => lambda^6*z) h.e60
+  · covariance (fun z : K => z/lambda), h.e01
+  · covariance (fun z : K => lambda*z), h.e10
+  · covariance (fun z : K => z/lambda^2), h.e02
+  · covariance (fun z : K => z), h.e11
+  · covariance (fun z : K => lambda^2*z), h.e20
+  · covariance (fun z : K => z/lambda^3), h.e03
+  · covariance (fun z : K => z/lambda), h.e12
+  · covariance (fun z : K => lambda*z), h.e21
+  · covariance (fun z : K => lambda^3*z), h.e30
+  · covariance (fun z : K => z/lambda^4), h.e04
+  · covariance (fun z : K => z/lambda^2), h.e13
+  · covariance (fun z : K => z), h.e22
+  · covariance (fun z : K => lambda^2*z), h.e31
+  · covariance (fun z : K => lambda^4*z), h.e40
+  · covariance (fun z : K => z/lambda^5), h.e05
+  · covariance (fun z : K => z/lambda^3), h.e14
+  · covariance (fun z : K => z/lambda), h.e23
+  · covariance (fun z : K => lambda*z), h.e32
+  · covariance (fun z : K => lambda^3*z), h.e41
+  · covariance (fun z : K => lambda^5*z), h.e50
+  · covariance (fun z : K => z/lambda^2), h.e24
+  · covariance (fun z : K => z), h.e33
+  · covariance (fun z : K => lambda^2*z), h.e42
+  · covariance (fun z : K => lambda^4*z), h.e51
+  · covariance (fun z : K => lambda^6*z), h.e60
 
 /-- The four `v`-family certificate inputs are consequences of the literal
 coefficient system, including its five triangular equations. -/
@@ -131,7 +131,9 @@ theorem normalized_parallel_v_from_raw
     (hc01 : x.c01 = 0) (hc20 : x.c20 = 1)
     (hc11 : x.c11 = 0) (hc02 : x.c02 = 0) : False := by
   have ha11 : x.a11 = 0 := by
-    linear_combination h.e01
+    have hx := h.e01
+    rw [hb02, hc01] at hx
+    linear_combination hx
   have ha20 : x.a20 = -(x.b11 + 2*x.c10)/2 := by
     linear_combination (1/2) * h.e10
   have ha21 : x.a21 = 0 := by
@@ -155,7 +157,7 @@ theorem normalized_parallel_v_from_raw
       - 8*x.b21^2*x.c10 + 24*x.b21*x.c10^3
       - 48*x.b21*x.c10 = 0 := by
     have hx := h.e50
-    rw [ha11, ha20, ha21, ha30, hc01, hc20, hc11] at hx
+    rw [ha11, ha20, ha21, ha30, hc20, hc11] at hx
     linear_combination 6 * hx
   have e3 : 8*x.b11^3*x.c10 + 6*x.b11^2*x.b21
       + 12*x.b11^2*x.c10^2 - 2*x.b11^2
@@ -163,7 +165,7 @@ theorem normalized_parallel_v_from_raw
       - 33*x.b11*x.c10 - 6*x.b21^2 - 10*x.b21
       + 30*x.c10^2 - 30 = 0 := by
     have hx := h.e40
-    rw [ha11, ha20, ha21, ha30, hb12, hc01, hc20, hc11] at hx
+    rw [ha11, ha20, ha21, ha30, hc01, hc20, hc11] at hx
     linear_combination 6 * hx
   have e4 : 6*x.b11^3 + 8*x.b11^2*x.c10 - 12*x.b11*x.b21
       + 12*x.b11*x.c10^2 - 12*x.b11 - 8*x.b21*x.c10
