@@ -218,39 +218,39 @@ lemma term_eq_monomial (i j : Nat) (a : K) :
 
 private lemma pderiv_v_alpha (x : Coefficients K) :
     pderiv 0 (alpha x) =
-      1 + C (2*x.a20)*v + C x.a11*t + C (3*x.a30)*v^2
-        + C (2*x.a21)*v*t + C x.a12*t^2 := by
+      1 + 2*C x.a20*v + C x.a11*t + 3*C x.a30*v^2
+        + 2*C x.a21*v*t + C x.a12*t^2 := by
   simp [alpha, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
   ring
 
 private lemma pderiv_t_alpha (x : Coefficients K) :
     pderiv 1 (alpha x) =
-      C x.a11*v + C (2*x.a02)*t + C x.a21*v^2
-        + C (2*x.a12)*v*t := by
+      C x.a11*v + 2*C x.a02*t + C x.a21*v^2
+        + 2*C x.a12*v*t := by
   simp [alpha, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
   ring
 
 private lemma pderiv_v_beta (x : Coefficients K) :
     pderiv 0 (beta x) =
-      C (2*x.b20)*v + C x.b11*t + C (3*x.b30)*v^2
-        + C (2*x.b21)*v*t + C x.b12*t^2 := by
+      2*C x.b20*v + C x.b11*t + 3*C x.b30*v^2
+        + 2*C x.b21*v*t + C x.b12*t^2 := by
   simp [beta, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
   ring
 
 private lemma pderiv_t_beta (x : Coefficients K) :
     pderiv 1 (beta x) =
-      1 + C x.b11*v + C (2*x.b02)*t + C x.b21*v^2
-        + C (2*x.b12)*v*t := by
+      1 + C x.b11*v + 2*C x.b02*t + C x.b21*v^2
+        + 2*C x.b12*v*t := by
   simp [beta, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
   ring
 
 private lemma pderiv_v_gamma (x : Coefficients K) :
-    pderiv 0 (gamma x) = C x.c10 + C (2*x.c20)*v + C x.c11*t := by
+    pderiv 0 (gamma x) = C x.c10 + 2*C x.c20*v + C x.c11*t := by
   simp [gamma, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
   ring
 
 private lemma pderiv_t_gamma (x : Coefficients K) :
-    pderiv 1 (gamma x) = C x.c01 + C x.c11*v + C (2*x.c02)*t := by
+    pderiv 1 (gamma x) = C x.c01 + C x.c11*v + 2*C x.c02*t := by
   simp [gamma, v, t, MvPolynomial.pderiv_mul, MvPolynomial.pderiv_pow]
   ring
 
@@ -263,6 +263,7 @@ theorem delta_sub_one_expansion (x : Coefficients K) :
   unfold alpha beta gamma rawPolynomial term v t
   unfold e01 e10 e02 e11 e20 e03 e12 e21 e30 e04 e13 e22 e31 e40
   unfold e05 e14 e23 e32 e41 e50 e24 e33 e42 e51 e60
+  simp only [map_add, map_sub, map_mul, map_neg, map_ofNat]
   ring
 
 private lemma raw_eq_zero_of_system (x : Coefficients K) (h : RawSystem x) :
