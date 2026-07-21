@@ -14,7 +14,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
 
       - name: Confirm byte-identical proof inputs
         shell: bash
@@ -26,6 +26,10 @@ jobs:
           echo "9945CCA2BCF482DD07A98F49C7FB71F221AF9C77C493BEE0ED64BA6D525AA6B9  DiagonalReduction.lean" | sha256sum --check --strict
           echo "3088126C691D0EB28F7F15F2AFCB1FF32BDD132E646A22EC56810F5862927B1D  WronskianDischarge.lean" | sha256sum --check --strict
           echo "4E0FA3AE29B06B06D3DCB764F729C4C6C1C70EE5295E3F985B088198F6C131B6  RawDeltaBridge.lean" | sha256sum --check --strict
+          echo "455F68C69EB0529B37CD05161B31BD1C170ECE5B07E072A49C6DB15C339F2272  MixedGammaIdentities.lean" | sha256sum --check --strict
+          echo "4CE23C964669B77B305E13FFB6C3C89B65C2947FE0A73B54109E5BF126B80669  lakefile.lean" | sha256sum --check --strict
+          echo "62C2D9C0FC1EC4C67E151C11EFF41CA004EF38E179CF9476C230406E6DEFEDEF  lean-toolchain" | sha256sum --check --strict
+          echo "0FF221A1AF0ABC6E2A915E7FFAE023CAA823EABB84A9FAB3170C930D5EABD5C5  lake-manifest.json" | sha256sum --check --strict
 
       - name: Bootstrap pinned Lean toolchain
         shell: bash
@@ -39,7 +43,7 @@ jobs:
         run: lake update
 
       - name: Build with pinned Lean and Mathlib
-        uses: leanprover/lean-action@v1
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1
         with:
           build: true
           test: false
@@ -59,14 +63,15 @@ jobs:
           lake env lean DiagonalReduction.lean 2>&1 | tee DiagonalReduction.log
           lake env lean WronskianDischarge.lean 2>&1 | tee WronskianDischarge.log
           lake env lean RawDeltaBridge.lean 2>&1 | tee RawDeltaBridge.log
-          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log ParallelLinesNoGo.log DiagonalReduction.log WronskianDischarge.log RawDeltaBridge.log; then
+          lake env lean MixedGammaIdentities.lean 2>&1 | tee MixedGammaIdentities.log
+          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log ParallelLinesNoGo.log DiagonalReduction.log WronskianDischarge.log RawDeltaBridge.log MixedGammaIdentities.log; then
             echo "Unexpected sorryAx dependency" >&2
             exit 1
           fi
 
       - name: Upload replay logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: lean-kernel-replay-logs
           path: |
@@ -77,4 +82,5 @@ jobs:
             DiagonalReduction.log
             WronskianDischarge.log
             RawDeltaBridge.log
+            MixedGammaIdentities.log
           if-no-files-found: warn

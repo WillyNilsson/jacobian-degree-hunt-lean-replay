@@ -11,4 +11,4 @@ require mathlib from git
 lean_lib DegreeHuntReplay where
   roots := #[`DegreeHunt, `DegreeHuntMathlib, `ParallelLinesNoGo,
     `DiagonalReduction, `WronskianDischarge, `RawDeltaBridge,
-    `DegreeHuntReplay]
+    `MixedGammaIdentities, `DegreeHuntReplay]
