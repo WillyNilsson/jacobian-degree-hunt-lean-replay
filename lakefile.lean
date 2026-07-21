@@ -23,5 +23,6 @@ lean_lib FullLeanFormalization where
     `LeanFormalization.Certificates.Line,
     `LeanFormalization.Certificates.Parabola,
     `LeanFormalization.Certificates.TAxisQuadratic,
+    `LeanFormalization.ConstantGammaFixedCollision,
     `LeanFormalization.AllCertificates,
     `LeanFormalization.FullCubicScaffold]

@@ -31,6 +31,8 @@ but the evidence labels need three corrections.
    Fortunately that computation is unnecessary: full GL₂ conjugation sends any
    nonzero collision vector to `e₂`, leaving only the exact fixed-vector case.
 
-Accordingly the constant-gamma fixed-collision system now has both an exact
-Singular lift witness and a kernel-checked Lean certificate.  The Lean
-bridge/conjugation and scaffold-injectivity proofs still remain.
+Accordingly the constant-gamma fixed-collision system now has an exact Singular
+lift witness, a kernel-checked Lean certificate, and a kernel-checked bridge
+from the literal full-cubic raw Jacobian equations to that certificate.  The
+translation/jet-renormalization, GL₂ collision conjugation, and
+scaffold-injectivity proofs still remain.
