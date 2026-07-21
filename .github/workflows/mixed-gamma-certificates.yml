@@ -5,11 +5,13 @@ on:
     branches: ["main", "agent/mixed-gamma-certificates"]
     paths:
       - "mixed_gamma_certificates/**"
+      - "AUDIT_MIXED_GAMMA.md"
       - ".github/workflows/mixed-gamma-certificates.yml"
   pull_request:
     branches: ["main"]
     paths:
       - "mixed_gamma_certificates/**"
+      - "AUDIT_MIXED_GAMMA.md"
       - ".github/workflows/mixed-gamma-certificates.yml"
   workflow_dispatch:
 

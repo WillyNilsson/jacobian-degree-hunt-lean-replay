@@ -63,7 +63,7 @@ scalar systems to SymPy and Singular.
 ## Exact certificates
 
 The public Singular run is
-[GitHub Actions run 29816482340](https://github.com/WillyNilsson/jacobian-degree-hunt-lean-replay/actions/runs/29816482340).
+[GitHub Actions run 29817724979](https://github.com/WillyNilsson/jacobian-degree-hunt-lean-replay/actions/runs/29817724979).
 Every matrix job passed.  Singular 4.3.2p10 computed `G=liftstd(I,T)`, the job
 normalized its nonzero constant basis element to `1`, and checked the exact
 matrix identity `matrix(G)=matrix(I)*T`.
