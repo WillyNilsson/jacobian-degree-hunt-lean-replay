@@ -104,7 +104,8 @@ def parse_dump(path: Path) -> Case:
     digest = canonical_system_hash(equations, symbols)
     slug = path.stem.replace("_certificate", "")
     display = {"l": "Line", "q_t": "TAxisQuadratic", "p": "Parabola",
-               "h_m": "HyperbolaM", "h_v": "HyperbolaV", "h_0": "Hyperbola0"}.get(slug, slug)
+               "h_m": "HyperbolaM", "h_v": "HyperbolaV", "h_0": "Hyperbola0",
+               "constant_gamma_e2": "ConstantGammaE2"}.get(slug, slug)
     return Case(
         slug=slug,
         display=display,

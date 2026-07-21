@@ -77,7 +77,7 @@ jobs:
           diff -ru LeanFormalization/Certificates .generated/LeanFormalization/Certificates
           diff -u LeanFormalization/AllCertificates.lean .generated/LeanFormalization/AllCertificates.lean
           diff -ru certificate_data .generated/certificate_data --exclude=full_cubic_system.json
-      - name: Compile all six certificate replays
+      - name: Compile all generated certificate replays
         shell: bash
         run: |
           set -euo pipefail

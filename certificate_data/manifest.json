@@ -1,6 +1,33 @@
 {
   "cases": [
     {
+      "canonical_system_sha256": "42d93cca5339156ec39112eb4eaa6075a4220251d7e8669f71af98005140df6b",
+      "display": "ConstantGammaE2",
+      "equation_count": 14,
+      "equations": null,
+      "global_denominator": 10368,
+      "identity": "sum(integer_cleared_witness_i * equation_i) = 10368",
+      "integer_cleared_witnesses": null,
+      "rational_witnesses": null,
+      "singular_dump_sha256": "e64ecc703e95b0a1fa1c9e880bdf48f7900fcc6a1fc2f2538e3f719ba5843155",
+      "slug": "constant_gamma_e2",
+      "variables": [
+        "a20",
+        "a11",
+        "a30",
+        "a21",
+        "a12",
+        "a03",
+        "b20",
+        "b11",
+        "b30",
+        "b21",
+        "b12",
+        "b03"
+      ],
+      "verified_by_sympy": true
+    },
+    {
       "canonical_system_sha256": "d6da3bbd8a47232b077cf7e5297d5d3489aa5751da174f7e1974ad8de227507e",
       "display": "Hyperbola0",
       "equation_count": 36,

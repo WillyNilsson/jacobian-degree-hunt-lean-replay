@@ -1,0 +1,45 @@
+                     SINGULAR                                 /  Development
+ A Computer Algebra System for Polynomial Computations       /   version 4.3.2
+                                                           0<
+ by: W. Decker, G.-M. Greuel, G. Pfister, H. Schoenemann     \   Feb 2023
+FB Mathematik der Universitaet, D-67653 Kaiserslautern        \  Debian 1:4.3.2-p10+ds-1.1build1
+CASE CONSTANT_GAMMA_E2
+SYSTEM_SHA256 ec0c43f09dbedfa5d4734c9f96a12e1af946627843a39f6cd1b7b8062e81c935
+RAW_CONSTANT_BASIS
+G[1]=10368
+UNIT_BASIS_CHECK
+1
+1
+LIFT_IDENTITY_CHECK
+1
+CERTIFICATE_MATRIX
+ROW 1
+0
+ROW 2
+0
+ROW 3
+0
+ROW 4
+-1/2592*a03^2
+ROW 5
+-1/1728*a03^2
+ROW 6
+-1/864*a03^2
+ROW 7
+-1/864*a03*b03+1/432*a03
+ROW 8
+-1/864*a03*b03+1/144*a03
+ROW 9
+1/3456*a03^2*b11-1/1728*a03*b03^2-1/432*a03*b03+1/72*a03
+ROW 10
+1/1728*a03^2*b11*b03-1/864*a03*b03^3+1/576*a03^2*b11+1/864*a03^2*b12-1/432*a03*b03^2+1/432*a03*b03+1/36*a03
+ROW 11
+1/432*a03^2*b20+1/648*a03^2*b21-1/648*a21*a03*b03+1/864*a03*b11*b03-1/2592*a21*a03-1/96*a03*b11-1/864*a03*b12+1/54*b03^2+7/108*b03-7/108
+ROW 12
+1/288*a03^2*b20+1/432*a03^2*b21-1/432*a21*a03*b03+1/576*a03*b11*b03-1/64*a03*b11-1/576*a03*b12+1/36*b03^2+13/144*b03-1/8
+ROW 13
+1/216*a03^2*b20+1/288*a03^2*b21-1/288*a21*a03*b03+1/432*a03*b11*b03-7/288*a03*b11-1/288*a03*b12+1/24*b03^2+1/8*b03-1/4
+ROW 14
+-1/864*a03^2*b20*b03-1/1728*a03*b11*b03^2+1/144*a03^2*b20+11/1728*a03^2*b21-1/144*a21*a03*b03+5/1728*a03*b11*b03-1/1728*a03*b12*b03-7/144*a03*b11-1/72*a03*b12+1/16*b03^2+1/8*b03-1/2
+
+$Bye.

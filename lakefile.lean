@@ -16,7 +16,8 @@ lean_lib DegreeHuntReplay where
 /- The generated certificate replays and full-cubic bridge are intentionally
 kept in a separate, non-default target while the final case wiring remains WIP. -/
 lean_lib FullLeanFormalization where
-  roots := #[`LeanFormalization.Certificates.Hyperbola0,
+  roots := #[`LeanFormalization.Certificates.ConstantGammaE2,
+    `LeanFormalization.Certificates.Hyperbola0,
     `LeanFormalization.Certificates.HyperbolaM,
     `LeanFormalization.Certificates.HyperbolaV,
     `LeanFormalization.Certificates.Line,

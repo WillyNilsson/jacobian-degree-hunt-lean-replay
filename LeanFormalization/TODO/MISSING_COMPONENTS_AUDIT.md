@@ -27,5 +27,6 @@ but the evidence labels need three corrections.
    Fortunately that computation is unnecessary: full GL₂ conjugation sends any
    nonzero collision vector to `e₂`, leaving only the exact fixed-vector case.
 
-Accordingly the constant-gamma mathematics now has an exact CAS endpoint, but
-the Singular lift witness and all Lean bridge/conjugation proofs still remain.
+Accordingly the constant-gamma fixed-collision system now has both an exact
+Singular lift witness and a kernel-checked Lean certificate.  The Lean
+bridge/conjugation and scaffold-injectivity proofs still remain.

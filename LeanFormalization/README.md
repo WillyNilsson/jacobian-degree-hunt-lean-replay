@@ -3,7 +3,8 @@
 The files compiled by the `FullLeanFormalization` Lake target establish two
 kernel-checked layers:
 
-- exact Nullstellensatz identities for the six canonical case systems; and
+- exact Nullstellensatz identities for the six canonical nonconstant-gamma
+  systems and the constant-gamma fixed-collision system; and
 - the full-cubic, `a03`/`b03`-inclusive equivalence
   `RawSystem x ↔ delta x = 1` with all 27 nonconstant coefficients.
 
@@ -15,9 +16,9 @@ deliberately named `*.lean.todo`, are not compiled, and still contain explicit
 2. derivation of each certificate system from the literal determinant and the
    appropriate contracted-curve/Wronskian equations;
 3. the nonconstant-gamma case dispatch;
-4. the formalized constant-gamma invertibility endpoint (the mathematics now
-   reduces to one exact fixed-collision unit ideal, but its lift witness and
-   Lean conjugation/bridge proofs are not yet present); or
+4. the complete constant-gamma invertibility endpoint (its fixed-collision
+   unit ideal is now kernel-checked, but the Lean conjugation and coefficient
+   bridge from an arbitrary collision are not yet present); or
 5. the final scaffold theorem assembled only from the original hypotheses.
 
 No claim of an end-to-end Lean formalization should be made until those files

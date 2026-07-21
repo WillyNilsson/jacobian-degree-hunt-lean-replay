@@ -33,5 +33,10 @@ unit_ideal_over_QQ=True
 ```
 
 The generated Singular input was regenerated a second time and matched
-byte-for-byte.  Public Singular lift extraction and independent witness replay
-are defined in `.github/workflows/constant-gamma-endpoint.yml`.
+byte-for-byte.  Public run `29869875334` then extracted the Singular lift and
+independently replayed it.  The preserved dump has SHA-256
+`e64ecc703e95b0a1fa1c9e880bdf48f7900fcc6a1fc2f2538e3f719ba5843155`;
+the rational witness has digest
+`f9288a9e1c1e06f9ff775bece4b37fdfbd739218bcebe8c3ef04bf02756d8e12`.
+The generated `ConstantGammaE2.lean` module subsequently compiled locally with
+no `sorryAx` or project-specific axiom.

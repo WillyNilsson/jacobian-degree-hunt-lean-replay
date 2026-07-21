@@ -19,15 +19,17 @@ the fourteen nonconstant Jacobian coefficients produces the exact 14-equation,
 
   SHA-256 ec0c43f09dbedfa5d4734c9f96a12e1af946627843a39f6cd1b7b8062e81c935
 
-SymPy 1.14.0 verifies that this ideal is the unit ideal over ℚ.  The generated
-`constant_gamma_endpoint/constant_gamma_e2.sing` is the next input for liftstd
-witness extraction and Lean replay.
+SymPy 1.14.0 verifies that this ideal is the unit ideal over ℚ.  Public CI run
+29869875334 extracted and independently verified the Singular lift witness.
+The resulting `MixedGammaCertificates.ConstantGammaE2.no_solution` theorem is
+now generated and kernel-checked in
+`LeanFormalization/Certificates/ConstantGammaE2.lean`.
 
 Remaining formalization obligations:
 1. affine translation and jet renormalization of an arbitrary collision;
 2. the full GL₂ fixed-vector conjugation above;
-3. equality of the specialized Jacobian coefficients with the certificate
-   equations, followed by the generated `no_solution` theorem; and
+3. equality of the specialized Jacobian coefficients with the now-checked
+   certificate equations, followed by the generated `no_solution` theorem; and
 4. transfer from injectivity of the plane pair to injectivity of the scaffold.
 -/
 
