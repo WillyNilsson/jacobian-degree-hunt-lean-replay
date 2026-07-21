@@ -23,6 +23,7 @@ jobs:
           echo "4E0DD6F3E7C4AE7E723F6E2E771C70B2BF89D4CE27D5CB960B3922A175F24B91  DegreeHunt.lean" | sha256sum --check --strict
           echo "B29D8CB61C9CA0EE0D8C675656808A6551D2D1B6044F5B63AF1BDBE54A5F3DC4  DegreeHuntMathlib.lean" | sha256sum --check --strict
           echo "E3FADD5DDF2E87722C8B473FDBFBB9ABC5B59B4CC63B542A455A40B1E1129D33  ParallelLinesNoGo.lean" | sha256sum --check --strict
+          echo "9945CCA2BCF482DD07A98F49C7FB71F221AF9C77C493BEE0ED64BA6D525AA6B9  DiagonalReduction.lean" | sha256sum --check --strict
 
       - name: Bootstrap pinned Lean toolchain
         shell: bash
@@ -53,7 +54,8 @@ jobs:
           lake env lean DegreeHunt.lean 2>&1 | tee DegreeHunt.log
           lake env lean DegreeHuntMathlib.lean 2>&1 | tee DegreeHuntMathlib.log
           lake env lean ParallelLinesNoGo.lean 2>&1 | tee ParallelLinesNoGo.log
-          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log ParallelLinesNoGo.log; then
+          lake env lean DiagonalReduction.lean 2>&1 | tee DiagonalReduction.log
+          if grep -F "sorryAx" DegreeHunt.log DegreeHuntMathlib.log ParallelLinesNoGo.log DiagonalReduction.log; then
             echo "Unexpected sorryAx dependency" >&2
             exit 1
           fi
@@ -68,4 +70,5 @@ jobs:
             DegreeHunt.log
             DegreeHuntMathlib.log
             ParallelLinesNoGo.log
+            DiagonalReduction.log
           if-no-files-found: warn
