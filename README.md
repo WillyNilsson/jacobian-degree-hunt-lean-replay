@@ -17,13 +17,15 @@ Pinned inputs:
   `9945CCA2BCF482DD07A98F49C7FB71F221AF9C77C493BEE0ED64BA6D525AA6B9`
 - `WronskianDischarge.lean` SHA-256:
   `3088126C691D0EB28F7F15F2AFCB1FF32BDD132E646A22EC56810F5862927B1D`
+- `RawDeltaBridge.lean` SHA-256:
+  `4E0FA3AE29B06B06D3DCB764F729C4C6C1C70EE5295E3F985B088198F6C131B6`
 
 The workflow:
 
 1. rejects changed proof-file bytes;
-2. builds all five proof modules with the pinned dependency graph;
+2. builds all six proof modules with the pinned dependency graph;
 3. enables `leanchecker` as a second environment checker and rejects `sorry`;
-4. reruns all five files explicitly so their `#print axioms` output is retained;
+4. reruns all six files explicitly so their `#print axioms` output is retained;
 5. uploads the terminal logs as a GitHub Actions artifact.
 
 `ParallelLinesNoGo.lean` additionally checks the structural Wronskian lemmas,
@@ -35,7 +37,7 @@ degree-five `t^2` branch.
 `Delta - 1` (the search's 20 equations plus the five triangular equations),
 proves covariance under the determinant-one diagonal change, derives both
 normalized certificate systems, and supplies end-to-end algebraically closed
-field theorems. GitHub Actions run #20 kernel-checked these theorems without
+field theorems. The public replay kernel-checks these theorems without
 `sorryAx`; the displayed axioms are `propext`, `Classical.choice`, and
 `Quot.sound`.
 
@@ -47,6 +49,16 @@ Wronskian lemmas, and feeds the resulting vanishings into the diagonal
 normalization theorems. Its final theorems are
 `parallel_v_from_raw_distinct_roots` and
 `parallel_t_from_raw_distinct_roots`.
+
+`RawDeltaBridge.lean` closes the final definitional boundary. It defines the
+displayed `alpha`, `beta`, and `gamma` as genuine bivariate `MvPolynomial`s,
+defines `Delta` from formal partial derivatives, proves the complete symbolic
+expansion `Delta - 1 = rawPolynomial`, and proves
+`RawSystem x ↔ Delta x = 1` by coefficient projection. The final theorems
+`parallel_v_from_delta_distinct_roots` and
+`parallel_t_from_delta_distinct_roots` therefore start from the internally
+defined determinant equation rather than an externally generated equation
+list.
 
 To use it, create an empty GitHub repository, place these files at its root,
 commit, and push to `main`. The workflow also supports manual reruns through
