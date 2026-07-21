@@ -264,7 +264,7 @@ theorem parallel_v_from_raw
     intro hz
     rw [hz] at hPow
     norm_num at hPow
-    exact (inv_ne_zero hc20ne) hPow.symm
+    exact hc20ne hPow.symm
   have hScale : lambda^2*x.c20 = 1 := by
     rw [hPow]
     field_simp
@@ -299,4 +299,3 @@ end AlgebraicallyClosed
 #print axioms parallel_t_from_raw
 
 end DiagonalReduction
-
