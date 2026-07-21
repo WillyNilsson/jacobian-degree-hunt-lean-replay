@@ -15,7 +15,9 @@ deliberately named `*.lean.todo`, are not compiled, and still contain explicit
 2. derivation of each certificate system from the literal determinant and the
    appropriate contracted-curve/Wronskian equations;
 3. the nonconstant-gamma case dispatch;
-4. the constant-gamma invertibility endpoint; or
+4. the formalized constant-gamma invertibility endpoint (the mathematics now
+   reduces to one exact fixed-collision unit ideal, but its lift witness and
+   Lean conjugation/bridge proofs are not yet present); or
 5. the final scaffold theorem assembled only from the original hypotheses.
 
 No claim of an end-to-end Lean formalization should be made until those files
